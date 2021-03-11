@@ -108,11 +108,12 @@ def print_class_report(y_test, predictions):
 
 
 def create_models(file_path, models, classification_col_name, model_dir, features=[]):
-    logging.info("-----> Train models: " + str(models))
+    logging.info("-----> Train " + str(len(models)) + " models : " + str(models))
     start_time = time.time()
 
     # Load Data
     x_train, y_train, x_test, y_test = load_data(file_path, classification_col_name, features=features)
+    logging.info("-----> -----> x= " + str(x_train.columns))
 
     # Scale data
     x_train, x_test = scale_data(x_train, x_test, StandardScaler())

@@ -85,11 +85,11 @@ def load_data(file_path, classification_col_name, features=[]):
     logging.info("-----> Load data ")
     start_time = time.time()
 
-    X_train, y_train = load_data_into_frame(file_path + '_train.csv', classification_col_name, columns=features)
-    X_test, y_test = load_data_into_frame(file_path + '_test.csv', classification_col_name, columns=features)
+    x_train, y_train = load_data_into_frame(file_path + '_train.csv', classification_col_name, columns=features)
+    x_test, y_test = load_data_into_frame(file_path + '_test.csv', classification_col_name, columns=features)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("-----> Data loaded in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
-    return X_train, y_train, X_test, y_test
+    return x_train, y_train, x_test, y_test
