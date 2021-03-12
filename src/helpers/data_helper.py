@@ -81,3 +81,7 @@ def split_into_train_and_test(source_path, test_size=0.2):
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("-----> Splitting data finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
+
+def fmt_num(num):
+    return f"{num:_}"

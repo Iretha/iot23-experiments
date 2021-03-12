@@ -10,7 +10,9 @@ No  | Name          | Version          | Description
 4   | [pandas](https://pandas.pydata.org/)|1.2.2|Tools for Data Analysis & Data Manipulation in Python
 5   | [matplotlib](https://matplotlib.org/stable/tutorials/introductory/pyplot.html)|3.3.4|Visualization with Python
 6   | [seaborn](https://seaborn.pydata.org/)|0.11.1|Statistical data visualization
-7   | [pickle](https://docs.python.org/3/library/pickle.html)|-|Python object serialization for model serialization
+7   | [psutil](https://github.com/giampaolo/psutil)|5.8.0|Cross-platform library for retrieving information on running processes and system utilization (CPU, memory, disks, network, sensors) in Python
+8   | [pickle](https://docs.python.org/3/library/pickle.html)|-|Python object serialization for model serialization
+
 
 ## 2. How to run this example
 1. Download & Extract [IoT23](https://www.stratosphereips.org/datasets-iot23)

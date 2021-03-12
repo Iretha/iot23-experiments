@@ -106,7 +106,7 @@ iot23_F19 = [
 
 experiment_definitions = {
     # ALL ATTACKS
-    "EXP_FL16_FT13_R": {
+    "EXP_FL16_FT13_R_": {
         "description": "Test",
         "prepare_data": {
             "attack_files": [],
@@ -169,7 +169,7 @@ experiment_definitions = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "EXP_FL16_FT14_R": {
+    "EXP_FL16_FT14_R_": {
         "description": "Test",
         "prepare_data": {
             "attack_files": [],
@@ -225,7 +225,7 @@ experiment_definitions = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "EXP_FL16_FT17_R": {
+    "EXP_FL16_FT17_R_": {
         "description": "Test",
         "prepare_data": {
             "attack_files": [],
@@ -290,7 +290,7 @@ experiment_definitions = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "EXP_FL16_FT19_R": {
+    "EXP_FL16_FT19_R_": {
         "description": "Test",
         "prepare_data": {
             "attack_files": [],
@@ -355,7 +355,7 @@ experiment_definitions = {
     },
 
     # 4 ATTACKS
-    "EXP_FL4_FT13_R": {
+    "EXP_FL4_FT13_R_": {
         "description": "Test",
         "prepare_data": {
             "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
@@ -418,7 +418,7 @@ experiment_definitions = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "EXP_FL4_FT14_R": {
+    "EXP_FL4_FT14_R_": {
         "description": "Test",
         "prepare_data": {
             "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
@@ -474,7 +474,7 @@ experiment_definitions = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "EXP_FL4_FT17_R": {
+    "EXP_FL4_FT17_R_": {
         "description": "Test",
         "prepare_data": {
             "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
@@ -539,7 +539,7 @@ experiment_definitions = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "EXP_FL4_FT19_R": {
+    "EXP_FL4_FT19_R_": {
         "description": "Test",
         "prepare_data": {
             "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,

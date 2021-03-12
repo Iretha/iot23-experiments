@@ -1,7 +1,9 @@
+import os
 import pickle
 import logging
 import sys
 import time
+import psutil
 
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler
@@ -12,14 +14,8 @@ def save_trained_model(model, model_dir=None, model_name=None, model_name_suffix
     if model_name is None:
         model_name = model.__class__.__name__
 
-    model_path = model_name
-    if model_dir is not None:
-        model_path = model_dir + model_name
+    model_path = calc_model_path(model_dir, model_name, model_name_suffix)
 
-    if model_name_suffix is not None:
-        model_path += model_name_suffix
-
-    model_path += '.pkl'
     with open(model_path, 'wb') as file:
         pickle.dump(model, file)
 
@@ -27,12 +23,26 @@ def save_trained_model(model, model_dir=None, model_name=None, model_name_suffix
     return model_path
 
 
-def load_model(model_path):
-    with open(model_path, 'rb') as file:
-        model = pickle.load(file)
+def calc_model_path(model_dir=None, model_name=None, model_name_suffix=None, ext=".pkl"):
+    model_path = model_name
+    if model_dir is not None:
+        model_path = model_dir + model_name
 
-    logging.info('Model loaded: ' + model_path)
-    return model
+    if model_name_suffix is not None:
+        model_path += model_name_suffix
+
+    model_path += ext
+    return model_path
+
+
+def load_model(model_path):
+    if os.path.exists(model_path):
+        with open(model_path, 'rb') as file:
+            model = pickle.load(file)
+
+        logging.info('Model loaded: ' + model_path)
+        return model
+    return None
 
 
 def load_models(model_names, model_dir, ext='.pkl'):
@@ -40,7 +50,9 @@ def load_models(model_names, model_dir, ext='.pkl'):
 
     trained_models = {}
     for model_name in model_names:
-        trained_models[model_name] = load_model(model_dir + model_name + ext)
+        mdl = load_model(model_dir + model_name + ext)
+        if mdl is not None:
+            trained_models[model_name] = mdl
     return trained_models
 
 
@@ -59,50 +71,55 @@ def train_model(model, x_train, y_train):
     return model
 
 
-def train_models(models, x_train, y_train, model_dir=None):
+def train_models(models, x_train, y_train, model_dir=None, override_model=False):
     model_names = models.keys()
     trained_models = {}
-
     for model_name in model_names:
-        try:
-            model = train_model(models[model_name], x_train, y_train)
-
+        if model_not_exists(model_dir, model_name) or override_model:
             try:
-                save_trained_model(model, model_dir, model_name=model_name)
+                model = train_model(models[model_name], x_train, y_train)
+                try:
+                    save_trained_model(model, model_dir, model_name=model_name)
+                except:
+                    logging.error("Oops! Could not save model " + model_name, sys.exc_info()[0], " occurred.")
             except:
-                logging.error("Oops! Could not save model " + model_name, sys.exc_info()[0], " occurred.")
-
-        except:
-            logging.error("Oops! Could not finish training of " + model_name, sys.exc_info()[0], " occurred.")
-
-        trained_models[model_name] = model
+                logging.error("Oops! Could not finish training of " + model_name, sys.exc_info()[0], " occurred.")
+            trained_models[model_name] = model
+        else:
+            logging.warning('Training skipped! Model ' + model_name + ' already exists!')
     return trained_models
 
 
+def model_not_exists(model_dir, model_name, ext=".pkl"):
+    model_path = calc_model_path(model_dir, model_name, ext=ext)
+    return not os.path.exists(model_path)
+
+
 def score_models(models, x_test, y_test, prefix=''):
-    predictions = {}
     for model_name in models.keys():
-        predictions[model_name] = score_model(model_name, models[model_name], x_test, y_test, prefix=prefix)
-    return predictions
+        score_model(model_name, models[model_name], x_test, y_test, prefix=prefix)
 
 
 def score_model(model_name, model, x_test, y_test, prefix='', labels=None, title=''):
     logging.info('======================= Predicting with: ' + model_name)
 
+    adv_stats = {}
+
     start_time = time.time()
     predictions = model.predict(x_test)
 
+    pred_time_in_sec = time.time() - start_time
+    adv_stats['Runtime (sec)'] = pred_time_in_sec
+    print_time("---> ---> Prediction time is", pred_time_in_sec)
+
     print_score(y_test, predictions)
-    print_time("---> ---> Prediction time is", (time.time() - start_time))
     print_class_report(y_test, predictions)
-    # plt_confusion_matrix(y_test, predictions, labels=labels, title=model_name + title)
-    # plot_classification_report(cls_report)
 
     exec_time_seconds = (time.time() - start_time)
     exec_time_minutes = exec_time_seconds / 60
 
     logging.info("======================= Prediction ended in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
-    return predictions
+    return y_test, predictions, adv_stats
 
 
 def print_time(msg, time_in_seconds):
@@ -119,7 +136,7 @@ def print_class_report(y_test, predictions):
     logging.info("---> ---> Classification report: \n" + cls_report)
 
 
-def create_models(file_path, models, classification_col_name, model_dir, features=[]):
+def create_models(file_path, models, classification_col_name, model_dir, features=[], override=False):
     logging.info("-----> Train " + str(len(models)) + " models : " + str(models))
     start_time = time.time()
 
@@ -132,7 +149,7 @@ def create_models(file_path, models, classification_col_name, model_dir, feature
 
     # Create Models
     try:
-        train_models(models, x_train, y_train, model_dir=model_dir)
+        train_models(models, x_train, y_train, model_dir=model_dir, override_model=override)
     except:
         logging.error("Oops!", sys.exc_info()[0], " occurred.")
 
@@ -156,10 +173,9 @@ def score_trained_models(file_path, model_names, classification_col_name, model_
     trained_models = load_models(model_names, model_dir)
 
     # Score models
-    predictions = score_models(trained_models, x_test, y_test, prefix=prefix)
+    score_models(trained_models, x_test, y_test, prefix=prefix)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("===== ===== ===== Execution finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
-    return predictions
