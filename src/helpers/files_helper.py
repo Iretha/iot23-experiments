@@ -1,11 +1,12 @@
 import glob
 import logging
 import time
-from random import shuffle
+import re
 import os.path
 from os import path
-import re
+from random import shuffle
 from pathlib import Path
+from os import walk
 
 
 def mk_dir(dir_path):
@@ -19,6 +20,10 @@ def combine_files(source_dir,
                   header_line=None,
                   max_rows_from_file=None,
                   skip_rows=None):
+    if len(source_file_names) == 0:
+        _, _, filenames = next(walk(source_dir))
+        source_file_names = filenames
+
     source_files = []
     for source_file_name in source_file_names:
         source_files.append(source_dir + source_file_name)

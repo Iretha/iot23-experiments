@@ -1,7 +1,7 @@
 import pickle
 import logging
+import sys
 import time
-
 
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler
@@ -48,14 +48,14 @@ def train_model(model, x_train, y_train):
     model_name = model.__class__.__name__
     start_time = time.time()
 
-    logging.info("-----> Train " + model_name + " . . .")
+    logging.info("=====> Train " + model_name + " . . .")
 
     model.fit(x_train, y_train)
 
     exec_time_seconds = (time.time() - start_time)
     exec_time_minutes = exec_time_seconds / 60
 
-    logging.info("-----> Training of " + model_name + " finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+    logging.info("=====> Training of " + model_name + " finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
     return model
 
 
@@ -119,7 +119,10 @@ def create_models(file_path, models, classification_col_name, model_dir, feature
     x_train, x_test = scale_data(x_train, x_test, StandardScaler())
 
     # Create Models
-    train_models(models, x_train, y_train, model_dir=model_dir)
+    try:
+        train_models(models, x_train, y_train, model_dir=model_dir)
+    except:
+        logging.error("Oops!", sys.exc_info()[0], " occurred.")
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
