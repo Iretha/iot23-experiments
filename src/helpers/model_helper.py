@@ -110,6 +110,7 @@ def score_model(model_name, model, x_test, y_test, prefix='', labels=None, title
 
     pred_time_in_sec = time.time() - start_time
     adv_stats['Runtime (sec)'] = pred_time_in_sec
+    adv_stats['Runtime (min)'] = "%0.2f" % ((pred_time_in_sec / 60),)
     print_time("---> ---> Prediction time is", pred_time_in_sec)
 
     print_score(y_test, predictions)

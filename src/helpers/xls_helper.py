@@ -13,6 +13,8 @@ def export_stats_xls(output_dir, dict, title):
     header = [
         'EXP',
         'Algorithm',
+        'Runtime (sec)',
+        'Runtime (min)',
         'Accuracy',
         'Precision (macro avg)',
         'Precision (weighted avg)',
@@ -27,8 +29,11 @@ def export_stats_xls(output_dir, dict, title):
 
     for model_name in model_names:
         model_cls_report = model_stats[model_name]['classification_report']
+        adv_stats = model_stats[model_name]['adv_stats']
         row_content = [title,
                        model_name,
+                       adv_stats['Runtime (sec)'],
+                       adv_stats['Runtime (min)'],
                        model_cls_report["accuracy"],
                        model_cls_report["macro avg"]["precision"],
                        model_cls_report["weighted avg"]["precision"],
@@ -39,7 +44,6 @@ def export_stats_xls(output_dir, dict, title):
                        model_cls_report["macro avg"]["support"],
                        model_cls_report["weighted avg"]["support"]]
         content.append(row_content)
-
     row = 0
     for line in content:
         column = 0
@@ -47,5 +51,4 @@ def export_stats_xls(output_dir, dict, title):
             worksheet.write(row, column, cell)
             column += 1
         row += 1
-
     workbook.close()

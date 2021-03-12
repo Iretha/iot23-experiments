@@ -11,7 +11,6 @@ from sklearn.tree import DecisionTreeClassifier
 
 from config import iot23_experiments_dir
 from src.helpers.experiment_stats_helper import export_experiment_stats
-from src.helpers.model_score_helper import score_experiment_models, score_experiments_models
 
 # Set logging
 logging.basicConfig(
@@ -42,16 +41,6 @@ training_algorithms = dict([
 ])
 
 exp_dir = iot23_experiments_dir
-# rows_per_attack = [100_000]
-# exp_list = {
-#     'EXP_FL4_FT13_R_': rows_per_attack,
-#     # 'EXP_FL16_FT14_R': rows_per_attack,
-#     # 'EXP_FL16_FT17_R': rows_per_attack,
-#     # 'EXP_FL16_FT19_R': rows_per_attack,
-# }
-
-export_experiment_stats(exp_dir, 'EXP_FL4_FT13_R_100_000', '_data_02.csv', 'detailed-label')
-
-# score_experiment_models('EXP_FL4_FT13_R_', 100_000, training_algorithms.keys())
+export_experiment_stats(exp_dir, 'EXP_FL4_FT13_R_10_000', '_data_02.csv', 'detailed-label')
 
 print('The end.')
