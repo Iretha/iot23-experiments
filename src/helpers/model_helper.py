@@ -64,18 +64,29 @@ def train_models(models, x_train, y_train, model_dir=None):
     trained_models = {}
 
     for model_name in model_names:
-        model = train_model(models[model_name], x_train, y_train)
-        save_trained_model(model, model_dir, model_name=model_name)
+        try:
+            model = train_model(models[model_name], x_train, y_train)
+
+            try:
+                save_trained_model(model, model_dir, model_name=model_name)
+            except:
+                logging.error("Oops! Could not save model " + model_name, sys.exc_info()[0], " occurred.")
+
+        except:
+            logging.error("Oops! Could not finish training of " + model_name, sys.exc_info()[0], " occurred.")
+
         trained_models[model_name] = model
     return trained_models
 
 
-def score_models(models, x_test, y_test):
+def score_models(models, x_test, y_test, prefix=''):
+    predictions = {}
     for model_name in models.keys():
-        score_model(model_name, models[model_name], x_test, y_test)
+        predictions[model_name] = score_model(model_name, models[model_name], x_test, y_test, prefix=prefix)
+    return predictions
 
 
-def score_model(model_name, model, x_test, y_test, labels=None, title=''):
+def score_model(model_name, model, x_test, y_test, prefix='', labels=None, title=''):
     logging.info('======================= Predicting with: ' + model_name)
 
     start_time = time.time()
@@ -91,6 +102,7 @@ def score_model(model_name, model, x_test, y_test, labels=None, title=''):
     exec_time_minutes = exec_time_seconds / 60
 
     logging.info("======================= Prediction ended in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+    return predictions
 
 
 def print_time(msg, time_in_seconds):
@@ -130,7 +142,7 @@ def create_models(file_path, models, classification_col_name, model_dir, feature
     logging.info("-----> Training of all models finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
 
 
-def score_trained_models(file_path, models, classification_col_name, model_dir, features=[]):
+def score_trained_models(file_path, model_names, classification_col_name, model_dir, prefix='', features=[]):
     logging.info("===== ===== ===== Score models ===== ===== =====")
     start_time = time.time()
 
@@ -141,12 +153,13 @@ def score_trained_models(file_path, models, classification_col_name, model_dir, 
     x_train, x_test = scale_data(x_train, x_test, StandardScaler())
 
     # Load Models
-    trained_models = load_models(models.keys(), model_dir)
+    trained_models = load_models(model_names, model_dir)
 
     # Score models
-    score_models(trained_models, x_test, y_test)
+    predictions = score_models(trained_models, x_test, y_test, prefix=prefix)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("===== ===== ===== Execution finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+    return predictions

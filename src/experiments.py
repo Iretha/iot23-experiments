@@ -77,852 +77,39 @@ iot23_config = {
     "file_name_pattern": "/**/conn.log.labeled",
     "classification_col": "detailed-label",
     "file_header": "ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	service	duration	orig_bytes	resp_bytes	conn_state	local_orig	local_resp	missed_bytes	history	orig_pkts	orig_ip_bytes	resp_pkts	resp_ip_bytes	tunnel_parents	label	detailed-label\n",
+    "numeric_columns": ["duration",
+                        "orig_bytes",
+                        "resp_bytes",
+                        "missed_bytes",
+                        "local_orig",
+                        "local_resp",
+                        "orig_pkts",
+                        "orig_ip_bytes",
+                        "resp_pkts",
+                        "resp_ip_bytes"],
 }
+iot23_attack_files_ddos_okiru_hor_port_scan = [
+    "Benign.csv",
+    "DDoS.csv",
+    "Okiru.csv",
+    "PartOfAHorizontalPortScan.csv"
+]
+iot23_attacks_output_file_name = "_data_01_pre.csv"
 
-experiments = {
-    # Features (19):
-    # 'id.orig_h', 'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto', 'service',
-    # 'duration', 'orig_bytes', 'resp_bytes', 'conn_state', 'local_orig',
-    # 'local_resp', 'missed_bytes', 'history', 'orig_pkts', 'orig_ip_bytes',
-    # 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents'
-    "experiment_01_x100": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 100,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label"
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "missed_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "missed_bytes",
-                "local_orig",
-                "local_resp",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_01_x500k": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 500_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label"
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "missed_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "missed_bytes",
-                "local_orig",
-                "local_resp",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_01_x1m": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 1_000_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label"
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "missed_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "missed_bytes",
-                "local_orig",
-                "local_resp",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_01_x8m": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 8_000_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label"
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "missed_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "missed_bytes",
-                "local_orig",
-                "local_resp",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
+# All features
+iot23_F19 = [
+    'id.orig_h', 'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto', 'service',
+    'duration', 'orig_bytes', 'resp_bytes', 'conn_state', 'local_orig',
+    'local_resp', 'missed_bytes', 'history', 'orig_pkts', 'orig_ip_bytes',
+    'resp_pkts', 'resp_ip_bytes', 'tunnel_parents'
+]
 
-
-    # Features (14):
-    # 'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto', 'service', 'duration',
-    # 'orig_bytes', 'resp_bytes', 'conn_state', 'history', 'orig_pkts',
-    # 'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes'
-    "experiment_02_x100": {
+experiment_definitions = {
+    # ALL ATTACKS
+    "EXP_FL16_FT13_R": {
         "description": "Test",
         "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 100,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label",
-                "id.orig_h",
-                "local_orig",
-                "local_resp",
-                "missed_bytes",
-                "tunnel_parents"
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_02_x500k": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 500_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label",
-                "id.orig_h",
-                "local_orig",
-                "local_resp",
-                "missed_bytes",
-                "tunnel_parents"
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_02_x1m": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 1_000_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label",
-                "id.orig_h",
-                "local_orig",
-                "local_resp",
-                "missed_bytes",
-                "tunnel_parents"
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_02_x8m": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 8_000_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label",
-                "id.orig_h",
-                "local_orig",
-                "local_resp",
-                "missed_bytes",
-                "tunnel_parents"
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-
-
-    # Features (17):
-    # 'id.orig_p', 'id.resp_p', 'proto', 'service',
-    # 'duration', 'orig_bytes', 'resp_bytes', 'conn_state', 'local_orig',
-    # 'local_resp', 'missed_bytes', 'history', 'orig_pkts', 'orig_ip_bytes',
-    # 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents'
-    "experiment_03_x100": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 100,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label",
-                "id.orig_h",
-                "id.resp_h",
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "missed_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "missed_bytes",
-                "local_orig",
-                "local_resp",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_03_x500k": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 500_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label",
-                "id.orig_h",
-                "id.resp_h",
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "missed_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "missed_bytes",
-                "local_orig",
-                "local_resp",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_03_x1m": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 1_000_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label",
-                "id.orig_h",
-                "id.resp_h",
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "missed_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "missed_bytes",
-                "local_orig",
-                "local_resp",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-    "experiment_03_x8m": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 8_000_000,
-            "output_file_name": "_data_01_pre.csv"
-        },
-        "clean_data": {
-            "drop_columns": [
-                "ts",
-                "uid",
-                "label",
-                "id.orig_h",
-                "id.resp_h",
-            ],
-            "replace_values": {},
-            "replace_values_in_col": {
-                "detailed-label": {
-                    "-": "Benign"
-                },
-                "duration": {
-                    "-": 99
-                },
-                "orig_bytes": {
-                    "-": 99
-                },
-                "resp_bytes": {
-                    "-": 99
-                },
-                "missed_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
-                    "-": 99
-                },
-                "orig_pkts": {
-                    "-": 99
-                },
-                "orig_ip_bytes": {
-                    "-": 99
-                },
-                "resp_pkts": {
-                    "-": 99
-                },
-                "resp_ip_bytes": {
-                    "-": 99
-                },
-            },
-            "transform_to_numeric": [
-                "duration",
-                "orig_bytes",
-                "resp_bytes",
-                "missed_bytes",
-                "local_orig",
-                "local_resp",
-                "orig_pkts",
-                "orig_ip_bytes",
-                "resp_pkts",
-                "resp_ip_bytes"
-            ],
-            "output_file_name": "_data_02.csv"
-        }
-    },
-
-
-    # Features (13):
-    # 'id.orig_p', 'id.resp_p', 'proto', 'service',
-    # 'duration', 'orig_bytes', 'resp_bytes', 'conn_state', 'local_orig',
-    # 'local_resp', 'missed_bytes', 'history', 'orig_pkts', 'orig_ip_bytes',
-    # 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents'
-    "experiment_04_x100": {
-        "description": "Test",
-        "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 100,
+            "attack_files": [],
             "output_file_name": "_data_01_pre.csv"
         },
         "clean_data": {
@@ -982,16 +169,196 @@ experiments = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "experiment_04_x500k": {
+    "EXP_FL16_FT14_R": {
         "description": "Test",
         "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
+            "attack_files": [],
+            "output_file_name": "_data_01_pre.csv"
+        },
+        "clean_data": {
+            "drop_columns": [
+                "ts",
+                "uid",
+                "label",
+                "id.orig_h",
+                "local_orig",
+                "local_resp",
+                "missed_bytes",
+                "tunnel_parents"
             ],
-            "rows_per_attack": 500_000,
+            "replace_values": {},
+            "replace_values_in_col": {
+                "detailed-label": {
+                    "-": "Benign"
+                },
+                "duration": {
+                    "-": 99
+                },
+                "orig_bytes": {
+                    "-": 99
+                },
+                "resp_bytes": {
+                    "-": 99
+                },
+                "orig_pkts": {
+                    "-": 99
+                },
+                "orig_ip_bytes": {
+                    "-": 99
+                },
+                "resp_pkts": {
+                    "-": 99
+                },
+                "resp_ip_bytes": {
+                    "-": 99
+                },
+            },
+            "transform_to_numeric": [
+                "duration",
+                "orig_bytes",
+                "resp_bytes",
+                "orig_pkts",
+                "orig_ip_bytes",
+                "resp_pkts",
+                "resp_ip_bytes"
+            ],
+            "output_file_name": "_data_02.csv"
+        }
+    },
+    "EXP_FL16_FT17_R": {
+        "description": "Test",
+        "prepare_data": {
+            "attack_files": [],
+            "output_file_name": "_data_01_pre.csv"
+        },
+        "clean_data": {
+            "drop_columns": [
+                "ts",
+                "uid",
+                "label",
+                "id.orig_h",
+                "id.resp_h",
+            ],
+            "replace_values": {},
+            "replace_values_in_col": {
+                "detailed-label": {
+                    "-": "Benign"
+                },
+                "duration": {
+                    "-": 99
+                },
+                "orig_bytes": {
+                    "-": 99
+                },
+                "resp_bytes": {
+                    "-": 99
+                },
+                "missed_bytes": {
+                    "-": 99
+                },
+                "local_orig": {
+                    "-": 99
+                },
+                "local_resp": {
+                    "-": 99
+                },
+                "orig_pkts": {
+                    "-": 99
+                },
+                "orig_ip_bytes": {
+                    "-": 99
+                },
+                "resp_pkts": {
+                    "-": 99
+                },
+                "resp_ip_bytes": {
+                    "-": 99
+                },
+            },
+            "transform_to_numeric": [
+                "duration",
+                "orig_bytes",
+                "resp_bytes",
+                "missed_bytes",
+                "local_orig",
+                "local_resp",
+                "orig_pkts",
+                "orig_ip_bytes",
+                "resp_pkts",
+                "resp_ip_bytes"
+            ],
+            "output_file_name": "_data_02.csv"
+        }
+    },
+    "EXP_FL16_FT19_R": {
+        "description": "Test",
+        "prepare_data": {
+            "attack_files": [],
+            "output_file_name": "_data_01_pre.csv"
+        },
+        "clean_data": {
+            "drop_columns": [
+                "ts",
+                "uid",
+                "label"
+            ],
+            "replace_values": {},
+            "replace_values_in_col": {
+                "detailed-label": {
+                    "-": "Benign"
+                },
+                "duration": {
+                    "-": 99
+                },
+                "orig_bytes": {
+                    "-": 99
+                },
+                "resp_bytes": {
+                    "-": 99
+                },
+                "missed_bytes": {
+                    "-": 99
+                },
+                "local_orig": {
+                    "-": 99
+                },
+                "local_resp": {
+                    "-": 99
+                },
+                "orig_pkts": {
+                    "-": 99
+                },
+                "orig_ip_bytes": {
+                    "-": 99
+                },
+                "resp_pkts": {
+                    "-": 99
+                },
+                "resp_ip_bytes": {
+                    "-": 99
+                },
+            },
+            "transform_to_numeric": [
+                "duration",
+                "orig_bytes",
+                "resp_bytes",
+                "missed_bytes",
+                "local_orig",
+                "local_resp",
+                "orig_pkts",
+                "orig_ip_bytes",
+                "resp_pkts",
+                "resp_ip_bytes"
+            ],
+            "output_file_name": "_data_02.csv"
+        }
+    },
+
+    # 4 ATTACKS
+    "EXP_FL4_FT13_R": {
+        "description": "Test",
+        "prepare_data": {
+            "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
             "output_file_name": "_data_01_pre.csv"
         },
         "clean_data": {
@@ -1051,16 +418,10 @@ experiments = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "experiment_04_x1m": {
+    "EXP_FL4_FT14_R": {
         "description": "Test",
         "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 1_000_000,
+            "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
             "output_file_name": "_data_01_pre.csv"
         },
         "clean_data": {
@@ -1069,11 +430,10 @@ experiments = {
                 "uid",
                 "label",
                 "id.orig_h",
-                "id.resp_h",
                 "local_orig",
                 "local_resp",
                 "missed_bytes",
-                "tunnel_parents",
+                "tunnel_parents"
             ],
             "replace_values": {},
             "replace_values_in_col": {
@@ -1087,12 +447,6 @@ experiments = {
                     "-": 99
                 },
                 "resp_bytes": {
-                    "-": 99
-                },
-                "local_orig": {
-                    "-": 99
-                },
-                "local_resp": {
                     "-": 99
                 },
                 "orig_pkts": {
@@ -1120,16 +474,10 @@ experiments = {
             "output_file_name": "_data_02.csv"
         }
     },
-    "experiment_04_x8m": {
+    "EXP_FL4_FT17_R": {
         "description": "Test",
         "prepare_data": {
-            "attack_files": [
-                "Benign.csv",
-                "DDoS.csv",
-                "Okiru.csv",
-                "PartOfAHorizontalPortScan.csv"
-            ],
-            "rows_per_attack": 8_000_000,
+            "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
             "output_file_name": "_data_01_pre.csv"
         },
         "clean_data": {
@@ -1139,10 +487,6 @@ experiments = {
                 "label",
                 "id.orig_h",
                 "id.resp_h",
-                "local_orig",
-                "local_resp",
-                "missed_bytes",
-                "tunnel_parents",
             ],
             "replace_values": {},
             "replace_values_in_col": {
@@ -1156,6 +500,9 @@ experiments = {
                     "-": 99
                 },
                 "resp_bytes": {
+                    "-": 99
+                },
+                "missed_bytes": {
                     "-": 99
                 },
                 "local_orig": {
@@ -1181,6 +528,72 @@ experiments = {
                 "duration",
                 "orig_bytes",
                 "resp_bytes",
+                "missed_bytes",
+                "local_orig",
+                "local_resp",
+                "orig_pkts",
+                "orig_ip_bytes",
+                "resp_pkts",
+                "resp_ip_bytes"
+            ],
+            "output_file_name": "_data_02.csv"
+        }
+    },
+    "EXP_FL4_FT19_R": {
+        "description": "Test",
+        "prepare_data": {
+            "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
+            "output_file_name": "_data_01_pre.csv"
+        },
+        "clean_data": {
+            "drop_columns": [
+                "ts",
+                "uid",
+                "label"
+            ],
+            "replace_values": {},
+            "replace_values_in_col": {
+                "detailed-label": {
+                    "-": "Benign"
+                },
+                "duration": {
+                    "-": 99
+                },
+                "orig_bytes": {
+                    "-": 99
+                },
+                "resp_bytes": {
+                    "-": 99
+                },
+                "missed_bytes": {
+                    "-": 99
+                },
+                "local_orig": {
+                    "-": 99
+                },
+                "local_resp": {
+                    "-": 99
+                },
+                "orig_pkts": {
+                    "-": 99
+                },
+                "orig_ip_bytes": {
+                    "-": 99
+                },
+                "resp_pkts": {
+                    "-": 99
+                },
+                "resp_ip_bytes": {
+                    "-": 99
+                },
+            },
+            "transform_to_numeric": [
+                "duration",
+                "orig_bytes",
+                "resp_bytes",
+                "missed_bytes",
+                "local_orig",
+                "local_resp",
                 "orig_pkts",
                 "orig_ip_bytes",
                 "resp_pkts",
