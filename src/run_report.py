@@ -52,8 +52,8 @@ training_algorithms = dict([
 exp_dir = iot23_experiments_dir
 exp_list_all = list_folder_names(exp_dir)
 exp_list = [
-    'EXP_FL16_FT13_R_100_000'
+    'EXP_FL4_FT12_R_1_000'
 ]
-run_reports(exp_dir, exp_list_all, '_data_02.csv', 'detailed-label', export_charts=False, export_tables=True)
+run_reports(exp_dir, exp_list, '_data_02.csv', 'detailed-label', export_charts=False, export_tables=True)
 
 print('The end.')

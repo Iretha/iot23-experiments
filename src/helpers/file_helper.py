@@ -174,13 +174,17 @@ def shuffle_file_content(source_dir, source_file_name):
         with open(output_file_path, 'w') as out:
             out.write(''.join([header] + rest))
 
-    os.remove(source_file_path)
-    os.rename(output_file_path, source_file_path)
+    overwrite_existing_file(source_file_path, output_file_path)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("-----> Shuffle finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
+
+def overwrite_existing_file(source_file_path, output_file_path):
+    os.remove(source_file_path)
+    os.rename(output_file_path, source_file_path)
 
 
 def list_folder_names(parent_dir):

@@ -18,10 +18,10 @@ def score_experiment_models(experiment_definition_name, rows, model_names):
         return
 
     # Score models
-    experiment = experiment_definitions[experiment_definition_name]
-    data_file_path = experiment_dir + "data\\" + experiment["clean_data"]["output_file_name"]
+    experiment_definition = experiment_definitions[experiment_definition_name]
+    data_file_path = experiment_dir + "data\\" + experiment_definition["config"]["output_file_name"]
     model_dir = experiment_dir + "models\\"
-    classification_col = iot23_config["classification_col"]
+    classification_col = experiment_definition["config"]["classification_col"]
     score_trained_models(data_file_path, model_names, classification_col, model_dir, prefix=experiment_name)
 
 

@@ -4,59 +4,103 @@ import time
 from sklearn.model_selection import train_test_split
 
 from src.helpers.dataframe_helper import df_get, df_drop_cols, df_transform_to_numeric, save_to_csv, df_encode_objects, write_to_csv
+from src.helpers.file_helper import overwrite_existing_file
+
+
+def select_features(data_dir, data_file_name, experiment_definition, delimiter='\s+'):
+    logging.info("-----> Selecting features . . . ")
+    start_time = time.time()
+
+    # Check definition
+    selected_features = experiment_definition["features"]
+    if selected_features is None or len(selected_features) == 0:
+        return  # Select all
+
+    # Load dataframe
+    data_file_path = data_dir + data_file_name
+    dataframe = df_get(data_file_path, delimiter=delimiter)
+
+    # Select features
+    dataframe = dataframe[selected_features]
+
+    # Save file
+    output_file_name = data_file_name + '_tmp.csv'
+    save_to_csv(dataframe, data_dir, output_file_name, append=False)
+
+    # Overwrite previous file
+    output_file_path = data_dir + output_file_name
+    overwrite_existing_file(data_file_path, output_file_path)
+
+    end_time = time.time()
+    exec_time_seconds = (end_time - start_time)
+    exec_time_minutes = exec_time_seconds / 60
+    logging.info("-----> Features selected in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
 
 
 def clean_data_in_file(source_dir,
                        source_file,
                        output_dir,
                        output_file,
-                       delimiter='\s+',
-                       drop_cols=[],
-                       category_encoding={},
-                       replace_values={},
-                       replace_values_in_col={},
-                       transform_to_numeric=[]):
+                       experiment_definition,
+                       delimiter=','):
     logging.info("-----> Clean data... ")
     start_time = time.time()
 
+    # Load dataframe
     source_file_path = source_dir + source_file
-
-    # 0. Load dataframe
     dataframe = df_get(source_file_path, delimiter=delimiter)
+    df_columns = list(dataframe.columns)
 
-    # 1. Delete columns by name
-    if len(drop_cols) > 0:
-        df_drop_cols(dataframe, drop_cols)
-
-    # 2. Replace values in specific columns
+    # Replace values in specific columns
+    replace_values_in_col = filter_dict(df_columns,
+                                        experiment_definition['config']["replace_values_in_col"])
     if len(replace_values_in_col) > 0:
         logging.info('Replace col values: ' + str(replace_values_in_col))
         dataframe.replace(replace_values_in_col, inplace=True)
 
-    # 3. Replace values in dataframe
+    # Replace values in dataframe
+    replace_values = experiment_definition['config']["replace_values"]
     if len(replace_values) > 0:
         logging.info('Replace df values: ' + str(replace_values))
         dataframe.replace(replace_values, inplace=True)
 
-    # 4. Encode String Categorical Values
+    # Encode String Categorical Values
+    category_encoding = experiment_definition['config']["category_encodings"]
     if len(category_encoding) > 0:
         logging.info('Replace cat values: ' + str(category_encoding))
         dataframe.replace(category_encoding, inplace=True)
 
-    # 5. Convert to numeric if possible
+    # Convert to numeric if possible
+    transform_to_numeric = filter_list(df_columns, experiment_definition['config']["transform_to_numeric"])
     if len(transform_to_numeric) > 0:
         df_transform_to_numeric(dataframe, transform_to_numeric)
 
-    # 6. Encode what is left
+    # Encode what is left
     df_encode_objects(dataframe)
 
-    # 7. Save cleaned data to file
+    # Save cleaned data to file
     save_to_csv(dataframe, output_dir, output_file, append=False)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("-----> Cleaning finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
+
+def filter_dict(keys, dict_data):
+    filtered_data = {}
+    for data_key in dict_data.keys():
+        if data_key in keys:
+            filtered_data[data_key] = dict_data[data_key]
+    return filtered_data
+
+
+def filter_list(values, list_data):
+    filtered_data = []
+    for col in list_data:
+        if col in values:
+            filtered_data.append(col)
+    return filtered_data
 
 
 def split_into_train_and_test(source_path, test_size=0.2):
