@@ -65,9 +65,7 @@ def run_experiment(experiment_definition_name, rows_per_attack, algorithms, over
     logging.info("===== Experiment " + experiment_name + " finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
 
 
-def run_experiments(exp_definitions, algorithms, override=False):
-    experiments = exp_definitions.keys()
+def run_experiments(experiments, rows_per_attack, algorithms, override=False):
     for exp_definition in experiments:
-        iterations = exp_definitions[exp_definition]
-        for rows_per_it in iterations:
+        for rows_per_it in rows_per_attack:
             run_experiment(exp_definition, rows_per_it, algorithms, override=override)

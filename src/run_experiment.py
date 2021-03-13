@@ -9,6 +9,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
 
+from src.experiments import experiment_definitions
 from src.helpers.experiment_helper import run_experiments
 
 # Set logging
@@ -46,23 +47,12 @@ training_algorithms = dict([
 ])
 
 rows_per_attack = [1000]
-exp_list = {
-    'EXP_FL4_FT12_R_': rows_per_attack,
-    # 'EXP_FL4_FT13_R_': rows_per_attack,
-    # 'EXP_FL4_FT14_R_': rows_per_attack,
-    # 'EXP_FL4_FT17_R_': rows_per_attack,
-    # 'EXP_FL4_FT18_R_': rows_per_attack,
-    # 'EXP_FL4_FT19_R_': rows_per_attack,
-
-    # 'EXP_FL16_FT12_R_': rows_per_attack,
-    # 'EXP_FL16_FT13_R_': rows_per_attack,
-    # 'EXP_FL16_FT14_R_': rows_per_attack,
-    # 'EXP_FL16_FT17_R_': rows_per_attack,
-    # 'EXP_FL16_FT18_R_': rows_per_attack,
-    # 'EXP_FL16_FT19_R_': rows_per_attack,
-}
+exp_list_all = experiment_definitions.keys();
+exp_list_selected = [
+    'EXP_FL4_FT12_R_',
+]
 # score_experiment_models('EXP_FL4_FT13_R_', 100_000, training_algorithms.keys())
 
-run_experiments(exp_list, training_algorithms, override=True)
+run_experiments(exp_list_selected, rows_per_attack, training_algorithms, override=True)
 
 print('The end.')
