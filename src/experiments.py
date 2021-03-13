@@ -21,7 +21,7 @@ iot23_config = {
                         "resp_ip_bytes"],
 }
 
-iot23_clean_config = {
+iot23_data_config = {
     "classification_col": "detailed-label",
     "replace_values": {},
     "replace_values_in_col": {
@@ -230,77 +230,77 @@ experiment_definitions = {
         "description": "Based on the second research; All attack types",
         "attack_files": [],
         "features": iot23_F12_RESEARCH2,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
     "EXP_FL4_FT12_R_": {
         "description": "Based on the second research; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
         "features": iot23_F12_RESEARCH2,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
 
     "EXP_FL16_FT13_R_": {
         "description": "Based on the research, but without id.resp_h; All attack types",
         "attack_files": [],
         "features": iot23_F13_RESEARCH1_CUSTOM,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
     "EXP_FL4_FT13_R_": {
         "description": "Based on the research, but without id.resp_h; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
         "features": iot23_F13_RESEARCH1_CUSTOM,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
 
     "EXP_FL16_FT14_R_": {
         "description": "Based on the research; All attack types",
         "attack_files": [],
         "features": iot23_F14_RESEARCH1,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
     "EXP_FL4_FT14_R_": {
         "description": "Based on the research; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
         "features": iot23_F14_RESEARCH1,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
 
     "EXP_FL16_FT17_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'; All attack types",
         "attack_files": [],
         "features": iot23_F17,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
     "EXP_FL4_FT17_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
         "features": iot23_F17,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
 
     "EXP_FL16_FT18_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h'; All atack types",
         "attack_files": [],
         "features": iot23_F18,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
     "EXP_FL4_FT18_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h'; All atack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
         "features": iot23_F18,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
 
     "EXP_FL16_FT19_R_": {
         "description": "All features without: 'ts', 'uid', 'label'; All attack types",
         "attack_files": [],
         "features": iot23_F19,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
     "EXP_FL4_FT19_R_": {
         "description": "All features without: 'ts', 'uid', 'label'; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
         "features": iot23_F19,
-        "config": iot23_clean_config,
+        "config": iot23_data_config,
     },
 }

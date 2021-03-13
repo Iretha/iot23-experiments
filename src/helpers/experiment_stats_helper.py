@@ -1,20 +1,16 @@
 import glob
 import os
 import re
-import json
 import ntpath
 import logging
-
-import sklearn
+import json
 import time
 import psutil
-import pandas as pd
 
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import StandardScaler
-
 from src.helpers.dataframe_helper import df_get, load_data, scale_data
-from src.helpers.file_helper import mk_dir
+from src.helpers.file_helper import mk_dir, write_json_file
 from src.helpers.model_helper import load_model, score_model
 from src.helpers.stats_helper import print_correlations, print_value_distribution, print_scatter_matrix, print_attribute_distribution, plot_conf_m3x
 from src.helpers.xls_helper import export_stats_xls
@@ -47,7 +43,7 @@ def run_report(experiments_dir, experiment_name, data_file, class_col_name, resu
     # Export Model Scores
     if export_tables:
         models_dir = experiment_location + "\\models\\"
-        export_experiment_results(experiment_name, models_dir, x_test, y_test, results_path, class_col_name, export=True)
+        export_model_stats(experiment_name, models_dir, x_test, y_test, results_path, class_col_name, export=True)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
@@ -55,7 +51,21 @@ def run_report(experiments_dir, experiment_name, data_file, class_col_name, resu
     logging.info("===== Stats " + experiment_name + " exported in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
 
 
-def export_experiment_results(experiment_name, models_location, x_test, y_test, results_location, class_col_name, export=True):
+def combine_reports(exp_dir, experiment_names, output_file_name):
+    json_stats = find_json_stats(exp_dir, experiment_names)
+    export_stats_xls(exp_dir, json_stats, output_file_name=output_file_name)
+
+
+def find_json_stats(exp_dir, experiment_names):
+    json_stats = {}
+    for experiment_name in experiment_names:
+        experiment_result_json = exp_dir + experiment_name + '\\results\\stats.json'
+        with open(experiment_result_json) as json_file:
+            json_stats[experiment_name] = json.load(json_file)
+    return json_stats
+
+
+def export_model_stats(experiment_name, models_location, x_test, y_test, results_location, class_col_name, export=True):
     stats = {}
     model_stats = {}
     pid = os.getpid()
@@ -72,17 +82,16 @@ def export_experiment_results(experiment_name, models_location, x_test, y_test, 
             # print(p.memory_info())
             # print(p.cpu_percent(interval=1.0))
             y_test, predictions, adv_stats = score_model(model_name, model, x_test, y_test)
-            model_stats[model_name] = export_stats(y_test, predictions, results_location, model_name=model_name)
+            model_stats[model_name] = prepare_model_stats(y_test, predictions, results_location, model_name=model_name)
             model_stats[model_name]['adv_stats'] = adv_stats
 
     stats['model_stats'] = model_stats
     json_file = results_location + 'stats.json'
-    with open(json_file, 'w') as outfile:
-        json.dump(stats, outfile)
-    export_stats_xls(results_location, stats, experiment_name)
+    write_json_file(json_file, stats)
+    export_stats_xls(results_location, {experiment_name: stats}, output_file_name=experiment_name + '.xlsx')
 
 
-def export_stats(y_true, y_pred, results_location, prefix='', model_name=''):
+def prepare_model_stats(y_true, y_pred, results_location, prefix='', model_name=''):
     stats = {}
     stats['classification_report'] = classification_report(y_true, y_pred, output_dict=True)
     # plot_conf_m3x(y_true, y_pred)

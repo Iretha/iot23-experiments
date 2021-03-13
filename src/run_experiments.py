@@ -1,7 +1,6 @@
 import logging
 import pandas as pd
 import warnings
-
 import sklearn
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.linear_model import Perceptron, LogisticRegression
@@ -33,26 +32,29 @@ warnings.filterwarnings("ignore", category=sklearn.exceptions.ConvergenceWarning
 
 training_algorithms = dict([
     ('GaussianNB', GaussianNB()),  # 1.327 sec
-    ('Perceptron', Perceptron(eta0=0.2, max_iter=1000, tol=1e-3, verbose=0, early_stopping=True, validation_fraction=0.1)),  # 25.717 sec
     ('DecisionTree', DecisionTreeClassifier()),  # 17.019 sec
+    ('Perceptron', Perceptron()),  # 25.717 sec
     ('RandomForest', RandomForestClassifier()),  # 6.318 min
-    ('AdaBoost', AdaBoostClassifier(n_estimators=100)),  # 6.426 min
-    ('MLPClassifier', MLPClassifier(alpha=1e-05, hidden_layer_sizes=(15,), random_state=1, solver='lbfgs')),  # 8.313 min
-    ('LogisticRegression', LogisticRegression(solver='lbfgs', max_iter=1000)),  # 16.95 min
+    ('AdaBoost', AdaBoostClassifier()),  # 6.426 min
+    ('LogisticRegression', LogisticRegression()),  # 16.95 min
+    ('MLPClassifier', MLPClassifier()),  # 8.313 min
     ('GradientBoosting', GradientBoostingClassifier()),  # 37.039 min
     # ('SVC_linear', LinearSVC()),  # 47.565 min
     # ('KNeighborsClassifier', KNeighborsClassifier(n_neighbors=3)),  # 0.293 sec
     # ('SVC_rbf', SVC(kernel='rbf')),  # idk
     # ('SVC_poly', SVC(kernel='poly')),  # idk
+    # ('Perceptron', Perceptron(eta0=0.2, max_iter=1000, tol=1e-3, verbose=0, early_stopping=True, validation_fraction=0.1)),  # 25.717 sec
+    # ('MLPClassifier', MLPClassifier(alpha=1e-05, hidden_layer_sizes=(15,), random_state=1, solver='lbfgs')),  # 8.313 min
+    # ('LogisticRegression', LogisticRegression(solver='lbfgs', max_iter=1000)),  # 16.95 min
 ])
 
-rows_per_attack = [1000]
+rows_per_attack = [100_000]
 exp_list_all = experiment_definitions.keys();
 exp_list_selected = [
     'EXP_FL4_FT12_R_',
 ]
 # score_experiment_models('EXP_FL4_FT13_R_', 100_000, training_algorithms.keys())
 
-run_experiments(exp_list_selected, rows_per_attack, training_algorithms, override=True)
+run_experiments(exp_list_all, rows_per_attack, training_algorithms, override=True)
 
 print('The end.')

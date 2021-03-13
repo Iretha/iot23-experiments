@@ -3,7 +3,7 @@ import time
 
 from sklearn.model_selection import train_test_split
 
-from src.helpers.dataframe_helper import df_get, df_drop_cols, df_transform_to_numeric, save_to_csv, df_encode_objects, write_to_csv
+from src.helpers.dataframe_helper import df_get, df_transform_to_numeric, save_to_csv, df_encode_objects, write_to_csv
 from src.helpers.file_helper import overwrite_existing_file
 
 

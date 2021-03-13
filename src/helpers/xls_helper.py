@@ -1,14 +1,10 @@
-import pandas as pd
 import xlsxwriter
 
 
-def export_stats_xls(output_dir, dict, title):
-    file_path = output_dir + title + '.xlsx'
+def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx'):
+    file_path = output_dir + output_file_name
     workbook = xlsxwriter.Workbook(file_path)
     worksheet = workbook.add_worksheet()
-
-    model_stats = dict['model_stats']
-    model_names = model_stats.keys()
 
     header = [
         'EXP',
@@ -27,10 +23,29 @@ def export_stats_xls(output_dir, dict, title):
     ]
     content = [header]
 
+    exp_stat_names = exp_stats_dict.keys()
+    for exp_stat_name in exp_stat_names:
+        exp_stats = exp_stats_dict[exp_stat_name]
+        prepare_content(content, exp_stat_name, exp_stats)
+
+    row = 0
+    for line in content:
+        column = 0
+        for cell in line:
+            worksheet.write(row, column, cell)
+            column += 1
+        row += 1
+
+    workbook.close()
+
+
+def prepare_content(content, exp_name, exp_stats):
+    model_stats = exp_stats['model_stats']
+    model_names = model_stats.keys()
     for model_name in model_names:
         model_cls_report = model_stats[model_name]['classification_report']
         adv_stats = model_stats[model_name]['adv_stats']
-        row_content = [title,
+        row_content = [exp_name,
                        model_name,
                        adv_stats['Runtime (sec)'],
                        adv_stats['Runtime (min)'],
@@ -44,11 +59,4 @@ def export_stats_xls(output_dir, dict, title):
                        model_cls_report["macro avg"]["support"],
                        model_cls_report["weighted avg"]["support"]]
         content.append(row_content)
-    row = 0
-    for line in content:
-        column = 0
-        for cell in line:
-            worksheet.write(row, column, cell)
-            column += 1
-        row += 1
-    workbook.close()
+    return content

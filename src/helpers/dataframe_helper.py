@@ -11,12 +11,6 @@ def df_get(file_path, delimiter='\t', header=0):
     return pd.read_csv(file_path, delimiter=delimiter, header=header)
 
 
-def df_drop_cols(df, cols=[]):
-    for col in cols:
-        df.drop(columns=col, inplace=True)
-    logging.info('Delete columns (explicitly): ' + ', '.join(cols))
-
-
 def df_transform_to_numeric(df, columns=[]):
     if len(columns) == 0:
         columns = list(df.select_dtypes(include=['object']).columns)
@@ -28,7 +22,6 @@ def df_transform_to_numeric(df, columns=[]):
     return df
 
 
-# TODO pass encoder
 def df_encode_objects(df):
     ord_enc = OrdinalEncoder()
     obj_column_names = list(df.select_dtypes(include=['object']).columns)

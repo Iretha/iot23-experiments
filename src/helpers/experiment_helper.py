@@ -4,7 +4,13 @@ from config import iot23_attacks_dir, iot23_experiments_dir
 from src.experiments import experiment_definitions, iot23_config
 from src.helpers.file_helper import combine_files, shuffle_file_content, mk_dir
 from src.helpers.data_helper import clean_data_in_file, split_into_train_and_test, fmt_num, select_features
-from src.helpers.model_helper import create_models, score_models, score_trained_models
+from src.helpers.model_helper import create_models
+
+
+def run_experiments(experiments, rows_per_attack, algorithms, override=False):
+    for exp_definition in experiments:
+        for rows_per_it in rows_per_attack:
+            run_experiment(exp_definition, rows_per_it, algorithms, override=override)
 
 
 def run_experiment(experiment_definition_name, rows_per_attack, algorithms, override=False):
@@ -63,9 +69,3 @@ def run_experiment(experiment_definition_name, rows_per_attack, algorithms, over
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("===== Experiment " + experiment_name + " finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
-
-
-def run_experiments(experiments, rows_per_attack, algorithms, override=False):
-    for exp_definition in experiments:
-        for rows_per_it in rows_per_attack:
-            run_experiment(exp_definition, rows_per_it, algorithms, override=override)

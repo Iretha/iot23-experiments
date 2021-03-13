@@ -7,6 +7,7 @@ from os import path
 from random import shuffle
 from pathlib import Path
 from os import walk
+import json
 
 
 def mk_dir(dir_path):
@@ -195,3 +196,8 @@ def list_folder_names(parent_dir):
         dir_name = os.path.split(dir_name)[-1]
         dirs.append(dir_name)
     return dirs
+
+
+def write_json_file(output_path, data):
+    with open(output_path, 'w') as outfile:
+        json.dump(data, outfile)
