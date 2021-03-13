@@ -1,7 +1,13 @@
+import os
 import warnings
 
 import logging
+
+import ntpath
+
+import re
 import sklearn
+from glob import glob
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.linear_model import Perceptron, LogisticRegression
 from sklearn.naive_bayes import GaussianNB
@@ -10,9 +16,11 @@ from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 
 from config import iot23_experiments_dir
-from src.helpers.experiment_stats_helper import export_experiment_stats
+from src.helpers.experiment_stats_helper import run_report, run_reports
 
 # Set logging
+from src.helpers.file_helper import list_folder_names
+
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
@@ -40,7 +48,12 @@ training_algorithms = dict([
     # ('SVC_poly', SVC(kernel='poly')),  # idk
 ])
 
+
 exp_dir = iot23_experiments_dir
-export_experiment_stats(exp_dir, 'EXP_FL4_FT13_R_10_000', '_data_02.csv', 'detailed-label')
+exp_list_all = list_folder_names(exp_dir)
+exp_list = [
+    'EXP_FL16_FT13_R_100_000'
+]
+run_reports(exp_dir, exp_list_all, '_data_02.csv', 'detailed-label', export_charts=False, export_tables=True)
 
 print('The end.')

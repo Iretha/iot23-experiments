@@ -20,26 +20,34 @@ from src.helpers.stats_helper import print_correlations, print_value_distributio
 from src.helpers.xls_helper import export_stats_xls
 
 
-def export_experiment_stats(experiments_dir, experiment_name, data_file, class_col_name, results_dir='results'):
+def run_reports(exp_dir, experiment_names, data_file_name, classification_col_name, export_charts=False, export_tables=True):
+    for experiment_name in experiment_names:
+        run_report(exp_dir, experiment_name, data_file_name, classification_col_name, export_charts=export_charts, export_tables=export_tables)
+
+
+def run_report(experiments_dir, experiment_name, data_file, class_col_name, results_dir='results', export_charts=False, export_tables=True):
     logging.info("===== Export stats: " + experiment_name)
     start_time = time.time()
 
-    # Make stats directory
-    experiment_location = experiments_dir + experiment_name + "\\"
-    results_path = experiment_location + results_dir + "\\"
-    mk_dir(results_path)
+    if export_charts or export_tables:
+        # Make stats directory
+        experiment_location = experiments_dir + experiment_name + "\\"
+        results_path = experiment_location + results_dir + "\\"
+        mk_dir(results_path)
 
-    data_file_path = experiment_location + "\\data\\" + data_file
-    x_train, y_train, x_test, y_test = load_data(data_file_path, class_col_name)
+        data_file_path = experiment_location + "\\data\\" + data_file
+        x_train, y_train, x_test, y_test = load_data(data_file_path, class_col_name)
 
-    x_train, x_test = scale_data(x_train, x_test, StandardScaler())
+        x_train, x_test = scale_data(x_train, x_test, StandardScaler())
 
     # Export Data Charts
-    # export_data_stats(data_file_path, results_path, class_col_name)
+    if export_charts:
+        export_data_stats(data_file_path, results_path, class_col_name)
 
     # Export Model Scores
-    models_dir = experiment_location + "\\models\\"
-    export_experiment_results(experiment_name, models_dir, x_test, y_test, results_path, class_col_name, export=True)
+    if export_tables:
+        models_dir = experiment_location + "\\models\\"
+        export_experiment_results(experiment_name, models_dir, x_test, y_test, results_path, class_col_name, export=True)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)

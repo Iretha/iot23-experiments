@@ -1,4 +1,4 @@
-import glob
+from glob import glob
 import logging
 import time
 import re
@@ -181,3 +181,13 @@ def shuffle_file_content(source_dir, source_file_name):
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("-----> Shuffle finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
+
+def list_folder_names(parent_dir):
+    file_paths = glob(parent_dir + "/*/")
+    dirs = []
+    for p in file_paths:
+        dir_name = os.path.dirname(p)
+        dir_name = os.path.split(dir_name)[-1]
+        dirs.append(dir_name)
+    return dirs

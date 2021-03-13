@@ -47,15 +47,15 @@ training_algorithms = dict([
 
 rows_per_attack = [10_000, 100_000]
 exp_list = {
-    # 'EXP_FL4_FT13_R_': rows_per_attack,
+    'EXP_FL4_FT13_R_': rows_per_attack,
     'EXP_FL4_FT14_R_': rows_per_attack,
-    # 'EXP_FL4_FT17_R_': rows_per_attack,
-    # 'EXP_FL4_FT19_R_': rows_per_attack,
+    'EXP_FL4_FT17_R_': rows_per_attack,
+    'EXP_FL4_FT19_R_': rows_per_attack,
 
-    # 'EXP_FL16_FT13_R_': rows_per_attack,
+    'EXP_FL16_FT13_R_': rows_per_attack,
     'EXP_FL16_FT14_R_': rows_per_attack,
-    # 'EXP_FL16_FT17_R_': rows_per_attack,
-    # 'EXP_FL16_FT19_R_': rows_per_attack,
+    'EXP_FL16_FT17_R_': rows_per_attack,
+    'EXP_FL16_FT19_R_': rows_per_attack,
 }
 # score_experiment_models('EXP_FL4_FT13_R_', 100_000, training_algorithms.keys())
 
