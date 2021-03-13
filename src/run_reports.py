@@ -4,7 +4,7 @@ import warnings
 
 from config import iot23_experiments_dir
 from src.experiments import iot23_data_config
-from src.helpers.experiment_stats_helper import run_reports
+from src.helpers.report_helper import run_reports
 from src.helpers.file_helper import list_folder_names
 
 # Set logging
