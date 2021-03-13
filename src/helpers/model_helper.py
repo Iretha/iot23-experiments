@@ -145,9 +145,6 @@ def create_models(file_path, models, classification_col_name, model_dir, feature
     x_train, y_train, x_test, y_test = load_data(file_path, classification_col_name, features=features)
     logging.info("-----> -----> x= " + str(x_train.columns))
 
-    # Scale data
-    x_train, x_test = scale_data(x_train, x_test, StandardScaler())
-
     # Create Models
     try:
         train_models(models, x_train, y_train, model_dir=model_dir, override_model=override)
@@ -166,9 +163,6 @@ def score_trained_models(file_path, model_names, classification_col_name, model_
 
     # Load Data
     x_train, y_train, x_test, y_test = load_data(file_path, classification_col_name, features=features)
-
-    # Scale data
-    x_train, x_test = scale_data(x_train, x_test, StandardScaler())
 
     # Load Models
     trained_models = load_models(model_names, model_dir)

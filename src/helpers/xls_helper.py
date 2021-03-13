@@ -1,7 +1,10 @@
 import xlsxwriter
 
 
-def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx'):
+def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx', export_score_tables=False):
+    if not export_score_tables:
+        return
+
     file_path = output_dir + output_file_name
     workbook = xlsxwriter.Workbook(file_path)
     worksheet = workbook.add_worksheet()

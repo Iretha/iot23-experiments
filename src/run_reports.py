@@ -30,7 +30,8 @@ run_reports(exp_dir,
             exp_list_selected,
             iot23_data_config["output_file_name"],
             iot23_data_config["classification_col"],
-            export_charts=False,
-            export_tables=True)
+            export_data_charts=False,
+            export_score_tables=False,
+            export_score_charts=True)
 
 print('The end.')

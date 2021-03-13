@@ -71,6 +71,24 @@ iot23_data_config = {
         "resp_pkts",
         "resp_ip_bytes"
     ],
+    "class_labels": {
+        0: "Benign",
+        1: "Att",
+        2: "C&C",
+        3: "C&C-FD",
+        4: "C&C-HB",
+        5: "C&C-HB-Att",
+        6: "C&C-HB-FD",
+        7: "C&C-Mirai",
+        8: "C&C-HPS",
+        9: "C&C-Torii",
+        10: "DDoS",
+        11: "FD",
+        12: "Okiru",
+        13: "Okiru-Att",
+        14: "HorizPortSc",
+        15: "HPS-Att",
+    },
     "category_encodings": {
         "conn_state": {
             "S0": 0,

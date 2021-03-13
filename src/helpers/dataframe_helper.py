@@ -3,7 +3,7 @@ import pandas as pd
 from os import path
 import time
 
-from sklearn.preprocessing import OrdinalEncoder
+from sklearn.preprocessing import OrdinalEncoder, StandardScaler
 
 
 def df_get(file_path, delimiter='\t', header=0):
@@ -73,12 +73,17 @@ def load_data_into_frame(data_file_path, classification_col_name, columns=[]):
     return x, y
 
 
-def load_data(file_path, classification_col_name, features=[]):
+def load_data(file_path, classification_col_name, features=[], scale=True):
     logging.info("-----> Load data ")
     start_time = time.time()
 
+    # Load data
     x_train, y_train = load_data_into_frame(file_path + '_train.csv', classification_col_name, columns=features)
     x_test, y_test = load_data_into_frame(file_path + '_test.csv', classification_col_name, columns=features)
+
+    # Scale data
+    if scale:
+        x_train, x_test = scale_data(x_train, x_test, StandardScaler())
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
