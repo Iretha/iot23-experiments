@@ -1,12 +1,14 @@
+import logging
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-import sklearn
+import scikitplot as sk_plt
+import sys
 from pandas.plotting import scatter_matrix
-from sklearn.metrics import plot_confusion_matrix
+from sklearn.metrics import plot_confusion_matrix, roc_curve, auc, plot_roc_curve
 
-from src.experiments import iot23_data_config
+from src.experiments import iot23_data_config, experiment_definitions, get_exp_def_name_by_experiment
 
 
 def print_correlations(output_dir, corr, label="Correlations", file_name="correlations.png", export=True):
@@ -82,7 +84,9 @@ def print_scatter_matrix(output_dir, df, file_name="feature_distribution.png", e
     export_plt(file_path, export=export)
 
 
-def plot_confusion_ma3x(output_dir, model, x_test, y_test, title="Confusion Matrix", file_name="conf_ma3x.png"):
+def plot_confusion_ma3x(output_dir, model, x_test, y_test, experiment_name, title="Confusion Matrix", file_name="conf_ma3x.png"):
+    n_classes = experiment_definitions[get_exp_def_name_by_experiment(experiment_name)]["features"]
+
     # display_labels = get_all_labels()
     # labels = [i for i, _ in enumerate(display_labels)]
     # columns_count = len(display_labels)
@@ -94,6 +98,15 @@ def plot_confusion_ma3x(output_dir, model, x_test, y_test, title="Confusion Matr
     plt.xlabel('Predicted')
     plt.ylabel('True')
     export_plt(output_dir + file_name)
+
+
+def plot_roc_curve_c(output_dir, model, model_name, x_test, y_true, experiment_name, title="ROC Curve", file_name="roc_curve.png"):
+    try:
+        y_prob = model.predict_proba(x_test)
+        sk_plt.metrics.plot_roc_curve(y_true, y_prob, title=title)
+        export_plt(output_dir + file_name)
+    except:
+        logging.error("Oops! Could not export ROC curve for model " + model_name, sys.exc_info()[0], " occurred.")
 
 
 def export_plt(file_path, export=True):

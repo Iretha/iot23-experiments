@@ -8,6 +8,7 @@ import psutil
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler
 from src.helpers.dataframe_helper import load_data, scale_data
+from src.helpers.stats_helper import plot_roc_curve
 
 
 def save_trained_model(model, model_dir=None, model_name=None, model_name_suffix=None):
@@ -63,6 +64,8 @@ def train_model(model, x_train, y_train):
     logging.info("=====> Train " + model_name + " . . .")
 
     model.fit(x_train, y_train)
+
+    # y_score = cls.decision_function(x_test)
 
     exec_time_seconds = (time.time() - start_time)
     exec_time_minutes = exec_time_seconds / 60
@@ -143,7 +146,6 @@ def create_models(file_path, models, classification_col_name, model_dir, feature
 
     # Load Data
     x_train, y_train, x_test, y_test = load_data(file_path, classification_col_name, features=features)
-    logging.info("-----> -----> x= " + str(x_train.columns))
 
     # Create Models
     try:

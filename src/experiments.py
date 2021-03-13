@@ -322,3 +322,9 @@ experiment_definitions = {
         "config": iot23_data_config,
     },
 }
+
+
+def get_exp_def_name_by_experiment(experiment_name):
+    exp_def_name = experiment_name.split("_R_", 1)[0]
+    exp_def_name += "_R_"
+    return exp_def_name

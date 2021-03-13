@@ -11,7 +11,8 @@ from sklearn.metrics import classification_report, plot_confusion_matrix
 from src.helpers.dataframe_helper import df_get, load_data
 from src.helpers.file_helper import mk_dir, write_json_file
 from src.helpers.model_helper import load_model, score_model
-from src.helpers.stats_helper import print_correlations, print_class_value_distribution, print_scatter_matrix, print_attribute_distribution, plot_confusion_ma3x
+from src.helpers.stats_helper import print_correlations, print_class_value_distribution, print_scatter_matrix, print_attribute_distribution, plot_confusion_ma3x, plot_roc_curve, \
+    plot_roc_curve_c
 from src.helpers.xls_helper import export_stats_xls
 
 
@@ -122,7 +123,7 @@ def export_model_stats(experiment_name,
             # print(p.cpu_percent(interval=1.0))
             y_test, predictions, adv_stats = score_model(model_name, model, x_test, y_test)
             model_stats[model_name] = prepare_model_stats(y_test, predictions, adv_stats, export_score_tables=export_score_tables)
-            export_model_chart_images(results_location, model_name, model, x_test, y_test, experiment_name, export_score_charts=export_score_charts)
+            export_model_chart_images(results_location, model_name, model, x_test, y_test, predictions, experiment_name, export_score_charts=export_score_charts)
 
     stats['model_stats'] = model_stats
     write_json_file(results_location + 'stats.json', stats)
@@ -137,7 +138,7 @@ def prepare_model_stats(y_true, y_pred, adv_stats, export_score_tables=False):
             'adv_stats': adv_stats}
 
 
-def export_model_chart_images(results_location, model_name, model, x_test, y_test, experiment_name, export_score_charts=False):
+def export_model_chart_images(results_location, model_name, model, x_test, y_test, y_pred, experiment_name, export_score_charts=False):
     if not export_score_charts:
         return
 
@@ -145,8 +146,18 @@ def export_model_chart_images(results_location, model_name, model, x_test, y_tes
                         model,
                         x_test,
                         y_test,
-                        title=experiment_name + " (" + model_name + ")",
+                        experiment_name,
+                        title=experiment_name + " " + model_name + ": Confusion Matrix",
                         file_name=experiment_name + '_' + model_name + "_conf_m3x.png")
+
+    plot_roc_curve_c(results_location,
+                     model,
+                     model_name,
+                     x_test,
+                     y_test,
+                     experiment_name,
+                     title=experiment_name + " " + model_name + ": ROC Curves",
+                     file_name=experiment_name + '_' + model_name + "_roc_curve.png")
 
 
 def export_data_stats(source_file_path,
