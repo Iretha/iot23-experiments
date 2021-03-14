@@ -12,7 +12,7 @@ from src.helpers.dataframe_helper import df_get, load_data
 from src.helpers.file_helper import mk_dir, write_json_file
 from src.helpers.model_helper import load_model, score_model
 from src.helpers.stats_helper import print_correlations, print_class_value_distribution, print_scatter_matrix, print_attribute_distribution, plot_confusion_ma3x, plot_roc_curve, \
-    plot_roc_curve_c
+    plot_roc_curve_custom, plot_precision_recall_curve_custom
 from src.helpers.xls_helper import export_stats_xls
 
 
@@ -82,16 +82,33 @@ def run_report(experiments_dir,
 def combine_reports(exp_dir,
                     experiment_names,
                     output_file_name):
+    logging.info("===== Combine stats: " + str(experiment_names))
+    start_time = time.time()
+
     json_stats = find_json_stats(exp_dir, experiment_names)
-    export_stats_xls(exp_dir, json_stats, output_file_name=output_file_name)
+    export_stats_xls(exp_dir, json_stats, output_file_name=output_file_name, export_score_tables=True)
+
+    end_time = time.time()
+    exec_time_seconds = (end_time - start_time)
+    exec_time_minutes = exec_time_seconds / 60
+    logging.info("===== Stats combined in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
 
 
 def find_json_stats(exp_dir, experiment_names):
+    logging.info("===== Load json files: ")
+    start_time = time.time()
+
     json_stats = {}
     for experiment_name in experiment_names:
         experiment_result_json = exp_dir + experiment_name + '\\results\\stats.json'
         with open(experiment_result_json) as json_file:
             json_stats[experiment_name] = json.load(json_file)
+
+    end_time = time.time()
+    exec_time_seconds = (end_time - start_time)
+    exec_time_minutes = exec_time_seconds / 60
+    logging.info("===== Json files loaded in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
     return json_stats
 
 
@@ -150,14 +167,23 @@ def export_model_chart_images(results_location, model_name, model, x_test, y_tes
                         title=experiment_name + " " + model_name + ": Confusion Matrix",
                         file_name=experiment_name + '_' + model_name + "_conf_m3x.png")
 
-    plot_roc_curve_c(results_location,
-                     model,
-                     model_name,
-                     x_test,
-                     y_test,
-                     experiment_name,
-                     title=experiment_name + " " + model_name + ": ROC Curves",
-                     file_name=experiment_name + '_' + model_name + "_roc_curve.png")
+    plot_roc_curve_custom(results_location,
+                          model,
+                          model_name,
+                          x_test,
+                          y_test,
+                          experiment_name,
+                          title=experiment_name + " " + model_name + ": ROC Curves",
+                          file_name=experiment_name + '_' + model_name + "_roc_curve.png")
+
+    plot_precision_recall_curve_custom(results_location,
+                                       model,
+                                       model_name,
+                                       x_test,
+                                       y_test,
+                                       experiment_name,
+                                       title=experiment_name + " " + model_name + ": Precision-Recall Curves",
+                                       file_name=experiment_name + '_' + model_name + "_pr_recall_curve.png")
 
 
 def export_data_stats(source_file_path,

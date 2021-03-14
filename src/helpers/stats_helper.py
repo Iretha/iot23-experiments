@@ -100,10 +100,19 @@ def plot_confusion_ma3x(output_dir, model, x_test, y_test, experiment_name, titl
     export_plt(output_dir + file_name)
 
 
-def plot_roc_curve_c(output_dir, model, model_name, x_test, y_true, experiment_name, title="ROC Curve", file_name="roc_curve.png"):
+def plot_roc_curve_custom(output_dir, model, model_name, x_test, y_true, experiment_name, title="ROC Curve", file_name="roc_curve.png"):
     try:
         y_prob = model.predict_proba(x_test)
         sk_plt.metrics.plot_roc(y_true, y_prob, title=title)
+        export_plt(output_dir + file_name)
+    except:
+        logging.error("Oops! Could not export ROC curve for model " + model_name, sys.exc_info()[0], " occurred.")
+
+
+def plot_precision_recall_curve_custom(output_dir, model, model_name, x_test, y_true, experiment_name, title="Precision Recall Curve", file_name="pr_recall_curve.png"):
+    try:
+        y_prob = model.predict_proba(x_test)
+        sk_plt.metrics.plot_precision_recall(y_true, y_prob, title=title)
         export_plt(output_dir + file_name)
     except:
         logging.error("Oops! Could not export ROC curve for model " + model_name, sys.exc_info()[0], " occurred.")

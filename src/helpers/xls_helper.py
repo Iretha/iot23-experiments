@@ -1,3 +1,6 @@
+import logging
+import time
+
 import xlsxwriter
 
 
@@ -6,6 +9,10 @@ def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx', 
         return
 
     file_path = output_dir + output_file_name
+
+    logging.info("===== Export xlsx file: " + file_path)
+    start_time = time.time()
+
     workbook = xlsxwriter.Workbook(file_path)
     worksheet = workbook.add_worksheet()
 
@@ -41,11 +48,20 @@ def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx', 
 
     workbook.close()
 
+    end_time = time.time()
+    exec_time_seconds = (end_time - start_time)
+    exec_time_minutes = exec_time_seconds / 60
+    logging.info("===== Xlsx file in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
 
 def prepare_content(content, exp_name, exp_stats):
     model_stats = exp_stats['model_stats']
     model_names = model_stats.keys()
     for model_name in model_names:
+        if model_stats[model_name] is None:
+            logging.warning("No stats json for exp=" + exp_name + " and model=" + model_name)
+            continue
+
         model_cls_report = model_stats[model_name]['classification_report']
         adv_stats = model_stats[model_name]['adv_stats']
         row_content = [exp_name,
