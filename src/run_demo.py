@@ -31,14 +31,18 @@ def run_demo(experiments_dir,
              training_algorithms,
              output_data_file,
              classification_col,
-             combined_stats_xlsx_file_name="combined_stats.xlsx"):
+             combined_stats_xlsx_file_name="combined_stats.xlsx",
+             override_models_if_exist=False,
+             export_data_charts=True,
+             export_score_tables=True,
+             export_score_charts=True):
     # Run Experiments
     run_experiments(experiments_dir,
                     attack_files_dir,
                     experiments,
                     rows_per_attack,
                     training_algorithms,
-                    override=False)
+                    override=override_models_if_exist)
 
     # Run Reports
     experiment_names = list_experiment_names(experiments, rows_per_attack)
@@ -46,9 +50,9 @@ def run_demo(experiments_dir,
                 experiment_names,
                 output_data_file,
                 classification_col,
-                export_data_charts=True,
-                export_score_tables=True,
-                export_score_charts=True)
+                export_data_charts=export_data_charts,
+                export_score_tables=export_score_tables,
+                export_score_charts=export_score_charts)
 
     # Combine results into single xlsx file
     combine_reports(experiments_dir, experiment_names, combined_stats_xlsx_file_name)
@@ -86,4 +90,8 @@ run_demo(demo_experiments_dir,
          demo_training_algorithms,
          demo_output_data_file,
          demo_classification_col,
-         demo_combined_stats_xlsx_file_name)
+         demo_combined_stats_xlsx_file_name,
+         override_models_if_exist=False,
+         export_data_charts=True,
+         export_score_tables=True,
+         export_score_charts=True)

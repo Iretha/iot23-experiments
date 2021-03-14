@@ -61,6 +61,7 @@ def run_report(experiments_dir,
                       results_path,
                       class_col_name,
                       export_data_charts=export_data_charts)
+    logging.info("****** Data charts are in " + results_path)
 
     # Export Model Scores
     models_dir = experiment_location + "\\models\\"
@@ -72,6 +73,7 @@ def run_report(experiments_dir,
                        class_col_name,
                        export_score_tables=export_score_tables,
                        export_score_charts=export_score_charts)
+    logging.info("****** Model stats & charts are in " + results_path)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)

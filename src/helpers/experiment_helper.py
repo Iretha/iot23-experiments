@@ -10,6 +10,7 @@ def run_experiments(experiments_dir, attack_files_dir, experiments, rows_per_att
     for exp_definition in experiments:
         for rows_per_it in rows_per_attack:
             run_experiment(experiments_dir, attack_files_dir, exp_definition, rows_per_it, algorithms, override=override)
+    logging.info("Experiment folders are in " + experiments_dir)
 
 
 def run_experiment(experiments_dir, attack_files_dir, experiment_definition_name, rows_per_attack, algorithms, override=False):
@@ -51,6 +52,7 @@ def run_experiment(experiments_dir, attack_files_dir, experiment_definition_name
 
     # Split data
     split_into_train_and_test(data_dir + output_data_file_name)
+    logging.info("****** Experiment data files are in " + data_dir)
 
     # Make models dir
     model_dir = experiment_dir + "\\models\\"
@@ -60,9 +62,7 @@ def run_experiment(experiments_dir, attack_files_dir, experiment_definition_name
     classification_col = experiment_definition["config"]["classification_col"]
     data_file_path = data_dir + output_data_file_name
     create_models(data_file_path, algorithms, classification_col, model_dir, override=override)
-
-    # Score models
-    # score_experiment_models(experiment_definition_name, experiment_name, algorithms)
+    logging.info("****** Experiment models are in " + model_dir)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)

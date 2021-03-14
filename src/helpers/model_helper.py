@@ -137,7 +137,7 @@ def print_score(y_test, predictions):
 
 def print_class_report(y_test, predictions):
     cls_report = classification_report(y_test, predictions)
-    logging.info("---> ---> Classification report: \n" + cls_report)
+    logging.debug("---> ---> Classification report: \n" + cls_report)
 
 
 def create_models(file_path, models, classification_col_name, model_dir, features=[], override=False):
