@@ -3,6 +3,8 @@ import os
 import logging
 
 from config import iot23_scenarios_dir, iot23_attacks_dir, iot23_experiments_dir
+from src.experiments import iot23_config
+from src.helpers.file_helper import find_files_recursively
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -13,13 +15,15 @@ logging.basicConfig(
     ])
 
 
-def check_config(scenarios_dir, attack_files_dir, experiments_dir):
+def check_config(scenarios_dir, scenario_file_name_pattern, attack_files_dir, experiments_dir):
     # Validate scenarios home_dir
     valid_scenarios_dir = os.path.exists(scenarios_dir)
     if not valid_scenarios_dir:
         logging.error("Please, go to config.py and make sure that path to scenarios exists.")
     else:
-        valid_scenarios_content = len(os.listdir(scenarios_dir)) > 0
+        # Validate scenario files
+        scenario_files = find_files_recursively(scenarios_dir, scenario_file_name_pattern)
+        valid_scenarios_content = len(scenario_files) > 0
         if not valid_scenarios_content:
             logging.error("Scenarios dir is empty: " + scenarios_dir +
                           "\nPlease download IoT23 dataset and copy the content of iot23_small "
@@ -41,12 +45,14 @@ def check_config(scenarios_dir, attack_files_dir, experiments_dir):
             and valid_scenarios_content \
             and valid_attack_files_dir \
             and valid_experiments_dir:
-        logging.info("Validation is successful. You can proceed with the next step (scenarios data extraction).")
+        logging.info("Validation is successful. You may proceed with the next step (scenarios data extraction).")
     else:
         logging.error("Please, fix the above errors in order to proceed further. ")
 
 
+
 scenarios_location = iot23_scenarios_dir
+file_name_pattern = iot23_config['file_name_pattern']
 attack_files_location = iot23_attacks_dir
 experiments_location = iot23_experiments_dir
-check_config(scenarios_location, attack_files_location, experiments_location)
+check_config(scenarios_location, file_name_pattern, attack_files_location, experiments_location)

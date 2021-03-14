@@ -122,7 +122,7 @@ def split_files_by_value_in_col(dataset_location,
 
 def find_files_recursively(location_dir, file_name_pattern):
     pathname = location_dir + file_name_pattern
-    files = glob.glob(pathname, recursive=True)
+    files = glob(pathname, recursive=True)
 
     logging.info('Files found: ' + str(len(files)))
     return files
@@ -201,3 +201,11 @@ def list_folder_names(parent_dir):
 def write_json_file(output_path, data):
     with open(output_path, 'w') as outfile:
         json.dump(data, outfile)
+
+
+def delete_dir_content(iot23_output_directory):
+    files = glob.glob(iot23_output_directory + '/*')
+    for f in files:
+        os.remove(f)
+
+    logging.info('Content of ' + iot23_output_directory + ' is deleted.')
