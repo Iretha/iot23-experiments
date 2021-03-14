@@ -7,12 +7,12 @@ import json
 import time
 import psutil
 
-from sklearn.metrics import classification_report, plot_confusion_matrix
+from sklearn.metrics import classification_report
 from src.helpers.dataframe_helper import df_get, load_data
 from src.helpers.file_helper import mk_dir, write_json_file
 from src.helpers.model_helper import load_model, score_model
 from src.helpers.stats_helper import print_correlations, print_class_value_distribution, print_scatter_matrix, print_attribute_distribution, plot_confusion_ma3x, plot_roc_curve, \
-    plot_roc_curve_custom, plot_precision_recall_curve_custom
+    plot_roc_curve_custom, plot_precision_recall_curve_custom, plot_confusion_ma3x_v2
 from src.helpers.xls_helper import export_stats_xls
 
 
@@ -159,13 +159,20 @@ def export_model_chart_images(results_location, model_name, model, x_test, y_tes
     if not export_score_charts:
         return
 
-    plot_confusion_ma3x(results_location,
-                        model,
-                        x_test,
-                        y_test,
-                        experiment_name,
-                        title=experiment_name + " " + model_name + ": Confusion Matrix",
-                        file_name=experiment_name + '_' + model_name + "_conf_m3x.png")
+    # plot_confusion_ma3x(results_location,
+    #                     model,
+    #                     x_test,
+    #                     y_test,
+    #                     experiment_name,
+    #                     title=experiment_name + " " + model_name + ": Confusion Matrix",
+    #                     file_name=experiment_name + '_' + model_name + "_conf_m3x.png")
+
+    plot_confusion_ma3x_v2(results_location,
+                           y_test,
+                           y_pred,
+                           experiment_name,
+                           title=experiment_name + " " + model_name + ": Confusion Matrix",
+                           file_name=experiment_name + '_' + model_name + "_conf_m3x_v2.png")
 
     plot_roc_curve_custom(results_location,
                           model,

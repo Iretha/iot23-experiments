@@ -7,6 +7,7 @@ import scikitplot as sk_plt
 import sys
 from pandas.plotting import scatter_matrix
 from sklearn.metrics import plot_confusion_matrix, roc_curve, auc, plot_roc_curve
+from sklearn.utils.multiclass import unique_labels
 
 from src.experiments import iot23_data_config, experiment_definitions, get_exp_def_name_by_experiment
 
@@ -100,10 +101,21 @@ def plot_confusion_ma3x(output_dir, model, x_test, y_test, experiment_name, titl
     export_plt(output_dir + file_name)
 
 
+def plot_confusion_ma3x_v2(output_dir, y_test, predictions, experiment_name, title="Confusion Matrix", file_name="conf_ma3x.png"):
+    classes = unique_labels(y_test, predictions)
+    labels = decode_labels(classes)
+
+    sk_plt.metrics.plot_confusion_matrix(y_test, predictions, normalize=True, title=title + " N", title_fontsize="medium")
+    export_plt(output_dir + file_name)
+
+    sk_plt.metrics.plot_confusion_matrix(y_test, predictions, normalize=False, title=title, title_fontsize="medium")
+    export_plt(output_dir + file_name + '_n.png')
+
+
 def plot_roc_curve_custom(output_dir, model, model_name, x_test, y_true, experiment_name, title="ROC Curve", file_name="roc_curve.png"):
     try:
         y_prob = model.predict_proba(x_test)
-        sk_plt.metrics.plot_roc(y_true, y_prob, title=title)
+        sk_plt.metrics.plot_roc(y_true, y_prob, title=title, cmap='nipy_spectral')
         export_plt(output_dir + file_name)
     except:
         logging.error("Oops! Could not export ROC curve for model " + model_name, sys.exc_info()[0], " occurred.")
@@ -112,10 +124,19 @@ def plot_roc_curve_custom(output_dir, model, model_name, x_test, y_true, experim
 def plot_precision_recall_curve_custom(output_dir, model, model_name, x_test, y_true, experiment_name, title="Precision Recall Curve", file_name="pr_recall_curve.png"):
     try:
         y_prob = model.predict_proba(x_test)
-        sk_plt.metrics.plot_precision_recall(y_true, y_prob, title=title)
+        sk_plt.metrics.plot_precision_recall(y_true, y_prob, title=title, cmap='nipy_spectral')
         export_plt(output_dir + file_name)
     except:
         logging.error("Oops! Could not export ROC curve for model " + model_name, sys.exc_info()[0], " occurred.")
+
+
+# def plot_cumulative_gain_custom(output_dir, model, model_name, x_test, y_true, title="Feature Importance", file_name="feat_importance.png"):
+#     try:
+#         y_prob = model.predict_proba(x_test)
+#         sk_plt.metrics.plot_ks_statistic(y_true, y_prob)
+#         plt.show()
+#     except:
+#         logging.error("Oops! Could not export Feature Importance for " + model_name, sys.exc_info()[0], " occurred.")
 
 
 def export_plt(file_path, export=True):
