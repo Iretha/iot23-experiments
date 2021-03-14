@@ -22,9 +22,10 @@ warnings.filterwarnings("ignore", category=sklearn.exceptions.ConvergenceWarning
 exp_dir = iot23_experiments_dir
 exp_list_all = list_folder_names(exp_dir)
 exp_list_selected = [
-    'EXP_FL4_FT12_R_1_000',
+    # 'EXP_FL4_FT12_R_1_000',
     'EXP_FL4_FT12_R_10_000',
     'EXP_FL4_FT12_R_100_000',
+    'EXP_FL4_FT12_R_1_000_000',
 ]
 combine_reports(exp_dir, exp_list_selected, 'combined.xlsx')
 

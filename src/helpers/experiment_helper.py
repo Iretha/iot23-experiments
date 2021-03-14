@@ -1,19 +1,18 @@
 import logging
 import time
-from config import iot23_attacks_dir, iot23_experiments_dir
 from src.experiments import experiment_definitions, iot23_config
 from src.helpers.file_helper import combine_files, shuffle_file_content, mk_dir, find_files_recursively, filter_out_files_larger_than, is_not_comment, get_col_value
 from src.helpers.data_helper import clean_data_in_file, split_into_train_and_test, fmt_num, select_features
 from src.helpers.model_helper import create_models
 
 
-def run_experiments(experiments, rows_per_attack, algorithms, override=False):
+def run_experiments(experiments_dir, attack_files_dir, experiments, rows_per_attack, algorithms, override=False):
     for exp_definition in experiments:
         for rows_per_it in rows_per_attack:
-            run_experiment(exp_definition, rows_per_it, algorithms, override=override)
+            run_experiment(experiments_dir, attack_files_dir, exp_definition, rows_per_it, algorithms, override=override)
 
 
-def run_experiment(experiment_definition_name, rows_per_attack, algorithms, override=False):
+def run_experiment(experiments_dir, attack_files_dir, experiment_definition_name, rows_per_attack, algorithms, override=False):
     experiment_name = experiment_definition_name + fmt_num(rows_per_attack)
     logging.info("===== Start experiment: " + experiment_name)
     start_time = time.time()
@@ -22,13 +21,13 @@ def run_experiment(experiment_definition_name, rows_per_attack, algorithms, over
     combined_file_name = experiment_definition['config']['combined_file_name']
 
     # Make experiment directory
-    experiment_dir = iot23_experiments_dir + experiment_name
+    experiment_dir = experiments_dir + experiment_name
     data_dir = experiment_dir + "\\data\\"
     mk_dir(data_dir)
 
     # Combine rows from multiple files
     file_header = iot23_config["file_header"]
-    combine_files(iot23_attacks_dir,
+    combine_files(attack_files_dir,
                   experiment_definition["attack_files"],
                   data_dir,
                   combined_file_name,
@@ -113,3 +112,12 @@ def split_scenarios_by_attack_type(dataset_location,
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("---> END in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
+
+def list_experiment_names(experiment_def_names, rows_per_attack):
+    experiment_names = []
+    for exp_def_name in experiment_def_names:
+        for it in rows_per_attack:
+            experiment_name = exp_def_name + fmt_num(it)
+            experiment_names.append(experiment_name)
+    return experiment_names

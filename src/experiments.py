@@ -165,7 +165,7 @@ iot23_data_config = {
         },
     },
     "combined_file_name": "_data_01_pre.csv",
-    "output_file_name": "_data_02.csv"
+    "output_file_name": "_data_02.csv",
 }
 
 iot23_attack_files_ddos_okiru_hor_port_scan = [

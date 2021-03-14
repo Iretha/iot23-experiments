@@ -8,6 +8,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
 
+from config import iot23_experiments_dir, iot23_attacks_dir
 from src.experiments import experiment_definitions
 from src.helpers.experiment_helper import run_experiments
 
@@ -49,12 +50,16 @@ training_algorithms = dict([
 ])
 
 rows_per_attack = [100_000]
-exp_list_all = experiment_definitions.keys();
+exp_list_all = experiment_definitions.keys()
 exp_list_selected = [
     'EXP_FL4_FT12_R_',
 ]
 # score_experiment_models('EXP_FL4_FT13_R_', 100_000, training_algorithms.keys())
-
-run_experiments(exp_list_all, rows_per_attack, training_algorithms, override=True)
+run_experiments(iot23_experiments_dir,
+                iot23_attacks_dir,
+                exp_list_all,
+                rows_per_attack,
+                training_algorithms,
+                override=True)
 
 print('The end.')

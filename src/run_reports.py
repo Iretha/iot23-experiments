@@ -23,9 +23,10 @@ warnings.filterwarnings("ignore", category=sklearn.exceptions.ConvergenceWarning
 exp_dir = iot23_experiments_dir
 exp_list_all = list_folder_names(exp_dir)
 exp_list_selected = [
-    # 'EXP_FL4_FT12_R_1_000',
-    'EXP_FL4_FT12_R_10_000',
+    'EXP_FL4_FT12_R_1_000',
+    # 'EXP_FL4_FT12_R_10_000',
     # 'EXP_FL4_FT12_R_100_000',
+    # 'EXP_FL4_FT12_R_1_000_000',
 
 ]
 run_reports(exp_dir,
@@ -33,7 +34,7 @@ run_reports(exp_dir,
             iot23_data_config["output_file_name"],
             iot23_data_config["classification_col"],
             export_data_charts=False,
-            export_score_tables=True,
-            export_score_charts=False)
+            export_score_tables=False,
+            export_score_charts=True)
 
 print('The end.')
