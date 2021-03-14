@@ -35,13 +35,23 @@ def print_class_value_distribution(output_dir, df, col_name, file_name="data_dis
 
     x = decode_labels(unique)
     x_pos = [i for i, _ in enumerate(x)]
+    cnt = len(x) + 2
 
     plt.style.use('ggplot')
-    plt.bar(x_pos, counts, color='orange', alpha=0.6)
-    plt.title('Class Frequency')
-    plt.ylabel('Frequency')
-    plt.xlabel('Class')
-    plt.xticks(x_pos, x)
+    fig, ax = plt.subplots(figsize=(cnt, cnt))
+    fig.subplots_adjust(bottom=0.2, left=0.2)
+    ax.bar(x_pos, counts, color='orange', alpha=0.6)
+    ax.set_title('Class Frequency')
+    ax.set_ylabel('Frequency')
+    ax.set_xlabel('Class')
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(
+        x,
+        rotation=35,
+        ha="right",
+        rotation_mode="anchor")
+
+    # plt.xticks(x_pos, x)
 
     export_plt(file_path)
 
@@ -107,12 +117,23 @@ def plot_confusion_ma3x(output_dir, model, x_test, y_test, experiment_name, titl
 
 def plot_confusion_ma3x_v2(output_dir, y_test, predictions, experiment_name, title="Confusion Matrix", file_name="conf_ma3x.png"):
     classes = unique_labels(y_test, predictions)
+    cnt = len(classes)
     labels = decode_labels(classes)
 
-    sk_plt.metrics.plot_confusion_matrix(y_test, predictions, normalize=True, title=title + " N", title_fontsize="medium")
+    sk_plt.metrics.plot_confusion_matrix(y_test,
+                                         predictions,
+                                         normalize=True,
+                                         title=title + " N",
+                                         title_fontsize="large",
+                                         figsize=(cnt, cnt))
     export_plt(output_dir + file_name + '_n.png')
 
-    sk_plt.metrics.plot_confusion_matrix(y_test, predictions, normalize=False, title=title, title_fontsize="medium")
+    sk_plt.metrics.plot_confusion_matrix(y_test,
+                                         predictions,
+                                         normalize=False,
+                                         title=title,
+                                         title_fontsize="large",
+                                         figsize=(cnt, cnt))
     export_plt(output_dir + file_name)
 
 
