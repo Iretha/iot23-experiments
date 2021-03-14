@@ -54,12 +54,13 @@ def run_demo(experiments_dir,
     combine_reports(experiments_dir, experiment_names, combined_stats_xlsx_file_name)
 
 
-all_experiments = experiment_definitions.keys()
+all_experiment_definitions = experiment_definitions.keys()
 demo_output_data_file = iot23_data_config["output_file_name"]
-demo_classification_col = iot23_data_config["classification_col"]
 demo_experiments_dir = iot23_experiments_dir
 demo_attack_files_dir = iot23_attacks_dir
-demo_rows_per_attack = [100, 1_000]
+
+demo_classification_col = iot23_data_config["classification_col"]
+demo_rows_per_attack = [1_000, 10_000]
 demo_training_algorithms = dict([
     # ('GaussianNB', GaussianNB()),
     ('DecisionTree', DecisionTreeClassifier()),
@@ -70,12 +71,12 @@ demo_training_algorithms = dict([
     # ('MLPClassifier', MLPClassifier()),
     # ('GradientBoosting', GradientBoostingClassifier()),
 ])
-demo_selected_experiments = [
+demo_selected_experiment_definitions = [
     "EXP_FL4_FT12_R_",
     "EXP_FL16_FT12_R_",
 ]
-# demo_experiments = all_experiments
-demo_experiments = demo_selected_experiments
+# demo_experiments = all_experiment_definitions
+demo_experiments = demo_selected_experiment_definitions
 demo_combined_stats_xlsx_file_name = "combined_stats_m1.xlsx"
 
 run_demo(demo_experiments_dir,

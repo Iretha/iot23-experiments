@@ -3,6 +3,8 @@ import time
 
 import xlsxwriter
 
+from src.helpers.stats_helper import decode_label
+
 
 def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx', export_score_tables=False):
     if not export_score_tables:
@@ -14,13 +16,24 @@ def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx', 
     start_time = time.time()
 
     workbook = xlsxwriter.Workbook(file_path)
-    worksheet = workbook.add_worksheet()
+    try:
+        create_overall_scores_worksheet(workbook, exp_stats_dict, title="Model Overall Scores")
+        create_class_scores_worksheet(workbook, exp_stats_dict, title="Model Class Scores")
+    finally:
+        if workbook is not None:
+            workbook.close()
 
+    end_time = time.time()
+    exec_time_seconds = (end_time - start_time)
+    exec_time_minutes = exec_time_seconds / 60
+    logging.info("===== Xlsx file in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
+
+def create_overall_scores_worksheet(workbook, exp_stats_dict, title="Model Scores"):
     header = [
         'EXP',
         'Algorithm',
         'Runtime (sec)',
-        'Runtime (min)',
         'Accuracy',
         'Precision (macro avg)',
         'Precision (weighted avg)',
@@ -32,29 +45,16 @@ def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx', 
         'Support (weighted avg)',
     ]
     content = [header]
-
     exp_stat_names = exp_stats_dict.keys()
     for exp_stat_name in exp_stat_names:
         exp_stats = exp_stats_dict[exp_stat_name]
-        prepare_content(content, exp_stat_name, exp_stats)
+        create_overall_model_scores_content(content, exp_stat_name, exp_stats)
 
-    row = 0
-    for line in content:
-        column = 0
-        for cell in line:
-            worksheet.write(row, column, cell)
-            column += 1
-        row += 1
-
-    workbook.close()
-
-    end_time = time.time()
-    exec_time_seconds = (end_time - start_time)
-    exec_time_minutes = exec_time_seconds / 60
-    logging.info("===== Xlsx file in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+    worksheet = workbook.add_worksheet(name=title)
+    write_sheet_content(worksheet, content)
 
 
-def prepare_content(content, exp_name, exp_stats):
+def create_overall_model_scores_content(content, exp_name, exp_stats):
     model_stats = exp_stats['model_stats']
     model_names = model_stats.keys()
     for model_name in model_names:
@@ -67,7 +67,6 @@ def prepare_content(content, exp_name, exp_stats):
         row_content = [exp_name,
                        model_name,
                        adv_stats['Runtime (sec)'],
-                       adv_stats['Runtime (min)'],
                        model_cls_report["accuracy"],
                        model_cls_report["macro avg"]["precision"],
                        model_cls_report["weighted avg"]["precision"],
@@ -79,3 +78,59 @@ def prepare_content(content, exp_name, exp_stats):
                        model_cls_report["weighted avg"]["support"]]
         content.append(row_content)
     return content
+
+
+def create_class_scores_worksheet(workbook, exp_stats_dict, title="Class Scores"):
+    header = [
+        'EXP',
+        'Algorithm',
+        'Class',
+        'Class Code',
+        'Precision',
+        'Recall',
+        'F1-Score',
+        'Support',
+    ]
+    content = [header]
+    exp_stat_names = exp_stats_dict.keys()
+    for exp_stat_name in exp_stat_names:
+        exp_stats = exp_stats_dict[exp_stat_name]
+        create_class_model_scores_content(content, exp_stat_name, exp_stats)
+
+    worksheet = workbook.add_worksheet(name=title)
+    write_sheet_content(worksheet, content)
+
+
+def create_class_model_scores_content(content, exp_name, exp_stats):
+    model_stats = exp_stats['model_stats']
+    model_names = model_stats.keys()
+    for model_name in model_names:
+        if model_stats[model_name] is None:
+            logging.warning("No stats json for exp=" + exp_name + " and model=" + model_name)
+            continue
+
+        model_cls_report = model_stats[model_name]['classification_report']
+        keys = model_cls_report.keys()
+        filtered_keys = [x for x in keys if x.isnumeric()]
+        for key in filtered_keys:
+            label = decode_label(key)
+            row_cells = [exp_name,
+                         model_name,
+                         label,
+                         key,
+                         model_cls_report[key]["precision"],
+                         model_cls_report[key]["recall"],
+                         model_cls_report[key]["f1-score"],
+                         model_cls_report[key]["support"]]
+            content.append(row_cells)
+    return content
+
+
+def write_sheet_content(worksheet, content):
+    row = 0
+    for line in content:
+        column = 0
+        for cell in line:
+            worksheet.write(row, column, cell)
+            column += 1
+        row += 1

@@ -35,6 +35,8 @@ No  | Name          | Version          | Description
 
 
 ## 4. (Step 2) Run Demo
+1. Run demo by running **run_demo.py**
+> 
 
 
 ## 5. (Step 3) Run Experiments

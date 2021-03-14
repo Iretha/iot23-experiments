@@ -52,6 +52,10 @@ def decode_labels(keys):
     return labels
 
 
+def decode_label(key):
+    return iot23_data_config['class_labels'][int(key)]
+
+
 def get_all_labels():
     class_labels = iot23_data_config['class_labels']
     keys = class_labels.keys()
