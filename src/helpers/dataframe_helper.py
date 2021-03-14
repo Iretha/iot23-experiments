@@ -7,7 +7,7 @@ from sklearn.preprocessing import OrdinalEncoder, StandardScaler
 
 
 def df_get(file_path, delimiter='\t', header=0):
-    logging.info('Load data file: ' + file_path)
+    logging.debug('Load data file: ' + file_path)
     return pd.read_csv(file_path, delimiter=delimiter, header=header)
 
 
