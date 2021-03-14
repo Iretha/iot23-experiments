@@ -35,14 +35,14 @@ def create_overall_scores_worksheet(workbook, exp_stats_dict, title="Model Score
         'Algorithm',
         'Runtime (sec)',
         'Accuracy',
-        'Precision (macro avg)',
-        'Precision (weighted avg)',
-        'Recall (macro avg)',
-        'Recall (weighted avg)',
-        'F1-Score (macro avg)',
-        'F1-Score (weighted avg)',
-        'Support (macro avg)',
-        'Support (weighted avg)',
+        'Precision (W)',
+        'Precision (M)',
+        'Recall (W)',
+        'Recall (M)',
+        'F1-Score (W)',
+        'F1-Score (M)',
+        'Support (W)',
+        'Support (M)'
     ]
     content = [header]
     exp_stat_names = exp_stats_dict.keys()
@@ -68,14 +68,14 @@ def create_overall_model_scores_content(content, exp_name, exp_stats):
                        model_name,
                        adv_stats['Runtime (sec)'],
                        model_cls_report["accuracy"],
-                       model_cls_report["macro avg"]["precision"],
                        model_cls_report["weighted avg"]["precision"],
-                       model_cls_report["macro avg"]["recall"],
+                       model_cls_report["macro avg"]["precision"],
                        model_cls_report["weighted avg"]["recall"],
-                       model_cls_report["macro avg"]["f1-score"],
+                       model_cls_report["macro avg"]["recall"],
                        model_cls_report["weighted avg"]["f1-score"],
-                       model_cls_report["macro avg"]["support"],
-                       model_cls_report["weighted avg"]["support"]]
+                       model_cls_report["macro avg"]["f1-score"],
+                       model_cls_report["weighted avg"]["support"],
+                       model_cls_report["macro avg"]["support"]]
         content.append(row_content)
     return content
 
