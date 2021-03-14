@@ -113,11 +113,12 @@ def create_class_model_scores_content(content, exp_name, exp_stats):
         keys = model_cls_report.keys()
         filtered_keys = [x for x in keys if x.isnumeric()]
         for key in filtered_keys:
-            label = decode_label(key)
+            key_num = int(key)
+            label = decode_label(key_num)
             row_cells = [exp_name,
                          model_name,
                          label,
-                         key,
+                         key_num,
                          model_cls_report[key]["precision"],
                          model_cls_report[key]["recall"],
                          model_cls_report[key]["f1-score"],
