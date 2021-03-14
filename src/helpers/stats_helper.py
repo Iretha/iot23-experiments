@@ -106,10 +106,10 @@ def plot_confusion_ma3x_v2(output_dir, y_test, predictions, experiment_name, tit
     labels = decode_labels(classes)
 
     sk_plt.metrics.plot_confusion_matrix(y_test, predictions, normalize=True, title=title + " N", title_fontsize="medium")
-    export_plt(output_dir + file_name)
+    export_plt(output_dir + file_name + '_n.png')
 
     sk_plt.metrics.plot_confusion_matrix(y_test, predictions, normalize=False, title=title, title_fontsize="medium")
-    export_plt(output_dir + file_name + '_n.png')
+    export_plt(output_dir + file_name)
 
 
 def plot_roc_curve_custom(output_dir, model, model_name, x_test, y_true, experiment_name, title="ROC Curve", file_name="roc_curve.png"):
