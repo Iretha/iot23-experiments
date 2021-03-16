@@ -116,6 +116,7 @@ def score_model(model_name, model, x_test, y_test, prefix='', labels=None, title
     adv_stats['Runtime (min)'] = "%0.2f" % ((pred_time_in_sec / 60),)
     print_time("---> ---> Prediction time is", pred_time_in_sec)
 
+    print_feat_importance(model_name, model, adv_stats)
     print_score(y_test, predictions)
     print_class_report(y_test, predictions)
 
@@ -124,6 +125,22 @@ def score_model(model_name, model, x_test, y_test, prefix='', labels=None, title
 
     logging.info("======================= Prediction ended in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
     return y_test, predictions, adv_stats
+
+
+def print_feat_importance(model_name, model, adv_stats):
+    feature_importance = None
+    try:
+        feature_importance = model.feature_importances_
+    except:
+        try:
+            feature_importance = model.coef_[0]
+        except:
+            logging.error("Oops! Feat Importance could not be extracted for " + model_name)
+
+    if feature_importance is not None:
+        d = {i: v for i, v in enumerate(feature_importance)}
+        logging.info('Feature Importance: ' + str(d))
+        adv_stats['Feature Importance'] = d
 
 
 def print_time(msg, time_in_seconds):

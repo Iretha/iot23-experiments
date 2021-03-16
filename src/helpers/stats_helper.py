@@ -118,6 +118,7 @@ def plot_confusion_ma3x(output_dir, model, x_test, y_test, experiment_name, titl
 def plot_confusion_ma3x_v2(output_dir, y_test, predictions, experiment_name, title="Confusion Matrix", file_name="conf_ma3x.png"):
     classes = unique_labels(y_test, predictions)
     cnt = len(classes)
+    cnt = cnt * 2 if cnt < 10 else cnt
     labels = decode_labels(classes)
 
     sk_plt.metrics.plot_confusion_matrix(y_test,
