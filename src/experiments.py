@@ -175,150 +175,126 @@ iot23_attack_files_ddos_okiru_hor_port_scan = [
     "PartOfAHorizontalPortScan.csv"
 ]
 
-# EXP_FL16_FT19_R_
-# All without:
-# 'ts', 'uid', 'label'
-iot23_F19 = [
-    'id.orig_h', 'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
-    'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-    'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
-    'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
-    'detailed-label'
-]
+feature_combinations = {
+    # All without:
+    # 'ts', 'uid', 'label'
+    "iot23_F19": [
+        'id.orig_h', 'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
+        'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+        'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
+        'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
+        'detailed-label'
+    ],
 
-# EXP_FL16_FT18_R_ / EXP_FL4_FT18_R_
-# All without:
-# 'ts', 'uid', 'label', 'id.orig_h'
-iot23_F18 = [
-    'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
-    'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-    'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
-    'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
-    'detailed-label'
-]
+    # EXP_FL16_FT18_R_ / EXP_FL4_FT18_R_
+    # All without:
+    # 'ts', 'uid', 'label', 'id.orig_h'
+    "iot23_F18": [
+        'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
+        'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+        'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
+        'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
+        'detailed-label'
+    ],
 
-# EXP_FL16_FT17_R_ / EXP_FL4_FT17_R_
-# All without:
-# 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'
-iot23_F17 = [
-    'id.orig_p', 'id.resp_p', 'proto',
-    'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-    'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
-    'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
-    'detailed-label'
-]
+    # EXP_FL16_FT17_R_ / EXP_FL4_FT17_R_
+    # All without:
+    # 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'
+    "iot23_F17": [
+        'id.orig_p', 'id.resp_p', 'proto',
+        'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+        'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
+        'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
+        'detailed-label'
+    ],
 
-# EXP_FL16_FT14_R_ / EXP_FL4_FT14_R_
-# All without:
-# 'ts', 'uid', 'label', 'id.orig_h', 'local_orig',
-# 'local_resp', 'missed_bytes',  'tunnel_parents'
-iot23_F14_RESEARCH1 = [
-    'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
-    'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-    'history', 'orig_pkts',
-    'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
-    'detailed-label'
-]
+    # EXP_FL16_FT14_R_ / EXP_FL4_FT14_R_
+    # All without:
+    # 'ts', 'uid', 'label', 'id.orig_h', 'local_orig',
+    # 'local_resp', 'missed_bytes',  'tunnel_parents'
+    "iot23_F14_RESEARCH1": [
+        'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
+        'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+        'history', 'orig_pkts',
+        'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
+        'detailed-label'
+    ],
 
-# EXP_FL16_FT13_R_ / EXP_FL4_FT13_R_
-# All without:
-# 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h',
-# 'local_orig', 'local_resp', 'missed_bytes',  'tunnel_parents'
-iot23_F13_RESEARCH1_CUSTOM = [
-    'id.orig_p', 'id.resp_p', 'proto',
-    'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-    'history', 'orig_pkts',
-    'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
-    'detailed-label'
-]
-
-# EXP_FL16_FT12_R_ / EXP_FL14_FT12_R_
-# All without:
-# 'ts', 'uid', 'label', 'id.orig_h', 'service', 'history'
-# 'local_orig', 'local_resp', 'missed_bytes',  'tunnel_parents'
-iot23_F12_RESEARCH2 = [
-    'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
-    'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-    'orig_pkts', 'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
-    'detailed-label'
-]
+    # EXP_FL16_FT12_R_ / EXP_FL14_FT12_R_
+    # All without:
+    # 'ts', 'uid', 'label', 'id.orig_h', 'service', 'history'
+    # 'local_orig', 'local_resp', 'missed_bytes',  'tunnel_parents'
+    "iot23_F12_RESEARCH2": [
+        'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
+        'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+        'orig_pkts', 'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
+        'detailed-label'
+    ],
+}
 
 experiment_definitions = {
     "EXP_FL16_FT12_R_": {
         "description": "Based on the second research; All attack types",
         "attack_files": [],
-        "features": iot23_F12_RESEARCH2,
+        "features": feature_combinations['iot23_F12_RESEARCH2'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT12_R_": {
         "description": "Based on the second research; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
-        "features": iot23_F12_RESEARCH2,
-        "config": iot23_data_config,
-    },
-
-    "EXP_FL16_FT13_R_": {
-        "description": "Based on the research, but without id.resp_h; All attack types",
-        "attack_files": [],
-        "features": iot23_F13_RESEARCH1_CUSTOM,
-        "config": iot23_data_config,
-    },
-    "EXP_FL4_FT13_R_": {
-        "description": "Based on the research, but without id.resp_h; All attack types",
-        "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
-        "features": iot23_F13_RESEARCH1_CUSTOM,
+        "features": feature_combinations['iot23_F12_RESEARCH2'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT14_R_": {
         "description": "Based on the research; All attack types",
         "attack_files": [],
-        "features": iot23_F14_RESEARCH1,
+        "features": feature_combinations['iot23_F14_RESEARCH1'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT14_R_": {
         "description": "Based on the research; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
-        "features": iot23_F14_RESEARCH1,
+        "features": feature_combinations['iot23_F14_RESEARCH1'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT17_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'; All attack types",
         "attack_files": [],
-        "features": iot23_F17,
+        "features": feature_combinations['iot23_F17'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT17_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
-        "features": iot23_F17,
+        "features": feature_combinations['iot23_F17'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT18_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h'; All atack types",
         "attack_files": [],
-        "features": iot23_F18,
+        "features": feature_combinations['iot23_F18'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT18_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h'; All atack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
-        "features": iot23_F18,
+        "features": feature_combinations['iot23_F18'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT19_R_": {
         "description": "All features without: 'ts', 'uid', 'label'; All attack types",
         "attack_files": [],
-        "features": iot23_F19,
+        "features": feature_combinations['iot23_F19'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT19_R_": {
         "description": "All features without: 'ts', 'uid', 'label'; All attack types",
         "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
-        "features": iot23_F19,
+        "features": feature_combinations['iot23_F19'],
         "config": iot23_data_config,
     },
 }
@@ -328,3 +304,9 @@ def get_exp_def_name_by_experiment(experiment_name):
     exp_def_name = experiment_name.split("_R_", 1)[0]
     exp_def_name += "_R_"
     return exp_def_name
+
+
+def get_exp_features(experiment_name):
+    exp_def_name = get_exp_def_name_by_experiment(experiment_name)
+    exp_def = experiment_definitions[exp_def_name]
+    return exp_def['features']
