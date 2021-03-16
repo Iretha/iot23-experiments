@@ -12,7 +12,7 @@ from src.helpers.dataframe_helper import df_get, load_data
 from src.helpers.file_helper import mk_dir, write_json_file
 from src.helpers.model_helper import load_model, score_model
 from src.helpers.stats_helper import print_correlations, print_class_value_distribution, print_scatter_matrix, print_attribute_distribution, plot_confusion_ma3x, plot_roc_curve, \
-    plot_roc_curve_custom, plot_precision_recall_curve_custom, plot_confusion_ma3x_v2
+    plot_roc_curve_custom, plot_precision_recall_curve_custom, plot_confusion_ma3x_v2, plot_feature_importance
 from src.helpers.xls_helper import export_stats_xls
 
 
@@ -57,7 +57,8 @@ def run_report(experiments_dir,
     x_train, y_train, x_test, y_test = load_data(data_file_path, class_col_name)
 
     # Export Data Charts
-    export_data_stats(data_file_path,
+    export_data_stats(experiment_name,
+                      data_file_path,
                       results_path,
                       class_col_name,
                       export_data_charts=export_data_charts)
@@ -140,13 +141,29 @@ def export_model_stats(experiment_name,
         if model is not None:
             # print(p.memory_info())
             # print(p.cpu_percent(interval=1.0))
-            y_test, predictions, adv_stats = score_model(model_name, model, x_test, y_test)
-            model_stats[model_name] = prepare_model_stats(y_test, predictions, adv_stats, export_score_tables=export_score_tables)
-            export_model_chart_images(results_location, model_name, model, x_test, y_test, predictions, experiment_name, export_score_charts=export_score_charts)
+            y_test, predictions, adv_stats = score_model(model_name,
+                                                         model,
+                                                         x_test,
+                                                         y_test)
+            model_stats[model_name] = prepare_model_stats(y_test,
+                                                          predictions,
+                                                          adv_stats,
+                                                          export_score_tables=export_score_tables)
+            export_model_chart_images(results_location,
+                                      model_name, model,
+                                      x_test,
+                                      y_test,
+                                      predictions,
+                                      experiment_name,
+                                      adv_stats,
+                                      export_score_charts=export_score_charts)
 
     stats['model_stats'] = model_stats
     write_json_file(results_location + 'stats.json', stats)
-    export_stats_xls(results_location, {experiment_name: stats}, output_file_name=experiment_name + '.xlsx', export_score_tables=export_score_tables)
+    export_stats_xls(results_location,
+                     {experiment_name: stats},
+                     output_file_name=experiment_name + '.xlsx',
+                     export_score_tables=export_score_tables)
 
 
 def prepare_model_stats(y_true, y_pred, adv_stats, export_score_tables=False):
@@ -157,23 +174,33 @@ def prepare_model_stats(y_true, y_pred, adv_stats, export_score_tables=False):
             'adv_stats': adv_stats}
 
 
-def export_model_chart_images(results_location, model_name, model, x_test, y_test, y_pred, experiment_name, export_score_charts=False):
+def export_model_chart_images(results_location,
+                              model_name,
+                              model,
+                              x_test,
+                              y_test,
+                              y_pred,
+                              experiment_name,
+                              adv_stats,
+                              export_score_charts=False):
     if not export_score_charts:
         return
 
-    # plot_confusion_ma3x(results_location,
-    #                     model,
-    #                     x_test,
-    #                     y_test,
-    #                     experiment_name,
-    #                     title=experiment_name + " " + model_name + ": Confusion Matrix",
-    #                     file_name=experiment_name + '_' + model_name + "_conf_m3x.png")
+    if adv_stats is not None and 'Feature Importance' in adv_stats:
+        feat_imp = adv_stats['Feature Importance']
+        if feat_imp is not None:
+            plot_feature_importance(results_location,
+                                    model_name,
+                                    experiment_name,
+                                    feat_imp,
+                                    title=experiment_name + "\n\n" + model_name + "\nFeature Importance",
+                                    file_name=experiment_name + '_' + model_name + "_feat_imp.png")
 
     plot_confusion_ma3x_v2(results_location,
                            y_test,
                            y_pred,
                            experiment_name,
-                           title=experiment_name + " " + model_name + ": Confusion Matrix",
+                           title=experiment_name + "\n\n" + model_name + "\nConfusion Matrix",
                            file_name=experiment_name + '_' + model_name + "_conf_m3x_v2.png")
 
     plot_roc_curve_custom(results_location,
@@ -182,7 +209,7 @@ def export_model_chart_images(results_location, model_name, model, x_test, y_tes
                           x_test,
                           y_test,
                           experiment_name,
-                          title=experiment_name + " " + model_name + ": ROC Curves",
+                          title=experiment_name + "\n\n" + model_name + "\nROC Curves",
                           file_name=experiment_name + '_' + model_name + "_roc_curve.png")
 
     plot_precision_recall_curve_custom(results_location,
@@ -191,11 +218,12 @@ def export_model_chart_images(results_location, model_name, model, x_test, y_tes
                                        x_test,
                                        y_test,
                                        experiment_name,
-                                       title=experiment_name + " " + model_name + ": Precision-Recall Curves",
+                                       title=experiment_name + "\n\n" + model_name + "\nPrecision-Recall Curves",
                                        file_name=experiment_name + '_' + model_name + "_pr_recall_curve.png")
 
 
-def export_data_stats(source_file_path,
+def export_data_stats(experiment_name,
+                      source_file_path,
                       results_path,
                       class_col_name,
                       export_data_charts=False):
@@ -204,51 +232,59 @@ def export_data_stats(source_file_path,
 
     # Data Stats
     df = df_get(source_file_path, delimiter=',')
-    export_data_chart_images(results_path,
+    export_data_chart_images(experiment_name,
+                             results_path,
                              class_col_name,
                              df,
-                             prefix='data_',
+                             prefix=experiment_name + 'data_',
                              export=True)
 
     # Train Data Stats
     df_train = df_get(source_file_path + '_train.csv', delimiter=',')
-    export_data_chart_images(results_path,
+    export_data_chart_images(experiment_name,
+                             results_path,
                              class_col_name,
                              df_train,
-                             prefix='data_train_',
+                             prefix=experiment_name + 'data_train_',
                              export=True)
 
     # Test Data Stats
     df_test = df_get(source_file_path + '_test.csv', delimiter=',')
-    export_data_chart_images(results_path,
+    export_data_chart_images(experiment_name,
+                             results_path,
                              class_col_name,
                              df_test,
-                             prefix='data_test_',
+                             prefix=experiment_name + '_data_test_',
                              export=True)
 
 
-def export_data_chart_images(stats_location,
+def export_data_chart_images(experiment_name,
+                             stats_location,
                              class_col_name,
                              df,
                              prefix='',
                              export=True):
     print_correlations(stats_location,
                        df.corr(),
-                       file_name=prefix + "correlations.png",
+                       title='\n' + experiment_name + '\n\n' + "Correlations",
+                       file_name=prefix + "_correlations.png",
                        export=export)
 
     print_class_value_distribution(stats_location,
                                    df,
                                    class_col_name,
+                                   title='\n' + experiment_name + '\n\n' + "Class Frequency",
                                    file_name=prefix + "class_values_distribution.png",
                                    export=export)
 
     print_attribute_distribution(stats_location,
                                  df,
+                                 title='\n' + experiment_name + '\n\n' + "Attribute Distribution",
                                  file_name=prefix + "attr_distribution.png",
                                  export=export)
 
-    print_scatter_matrix(stats_location,
-                         df,
-                         file_name=prefix + "scatter_m3x.png",
-                         export=export)
+    # print_scatter_matrix(stats_location,
+    #                      df,
+    #                      title='\n' + experiment_name + '\n\n' + "Scatter Matrix",
+    #                      file_name=prefix + "scatter_m3x.png",
+    #                      export=export)
