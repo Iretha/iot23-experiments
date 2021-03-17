@@ -22,7 +22,7 @@ def print_correlations(output_dir,
 
     plt.style.use('ggplot')
     fig, ax = plt.subplots(figsize=[columns_count, columns_count])
-    fig.suptitle(title, fontsize=25)
+    fig.suptitle(title, fontsize=18)
     ax = sns.heatmap(corr, annot=True, fmt='.0%', cmap='Greens', ax=ax)
 
     export_sns(fig, file_path, export=export)
@@ -49,7 +49,7 @@ def print_class_value_distribution(output_dir, df, col_name, title="Class Freque
     plt.style.use('ggplot')
     fig, ax = plt.subplots(figsize=(cnt, cnt))
     fig.subplots_adjust(bottom=0.2, left=0.2, top=0.75)
-    fig.suptitle(title, fontsize=15)
+    fig.suptitle(title, fontsize=18)
     ax.bar(x_pos, values, color='orange', alpha=0.6)
     # ax.set_title(title)
     ax.set_ylabel('Frequency')
@@ -101,7 +101,7 @@ def print_attribute_distribution(output_dir,
 
     plt.style.use('ggplot')
     df.hist(alpha=0.6, figsize=(columns_count + 1, columns_count + 1), color='green')
-    plt.suptitle(title, fontsize=25)
+    plt.suptitle(title, fontsize=18)
     export_plt(file_path)
 
 
