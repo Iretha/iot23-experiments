@@ -1,21 +1,13 @@
 import os
-
 import logging
 
-from config import iot23_scenarios_dir, iot23_attacks_dir, iot23_experiments_dir
-from src.experiments import iot23_config
 from src.helpers.file_helper import find_files_recursively
 
-logging.basicConfig(
-    format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.INFO,
-    datefmt='%Y-%m-%d %H:%M:%S', handlers=[
-        logging.FileHandler("..\logs\\validation.log"),
-        logging.StreamHandler()
-    ])
 
-
-def check_config(scenarios_dir, scenario_file_name_pattern, attack_files_dir, experiments_dir):
+def check_config(scenarios_dir,
+                 scenario_file_name_pattern,
+                 attack_files_dir,
+                 experiments_dir):
     # Validate scenarios home_dir
     valid_scenarios_dir = os.path.exists(scenarios_dir)
     if not valid_scenarios_dir:
@@ -48,11 +40,3 @@ def check_config(scenarios_dir, scenario_file_name_pattern, attack_files_dir, ex
         logging.info("Validation is successful. You may proceed with the next step (scenarios data extraction).")
     else:
         logging.error("Please, fix the above errors in order to proceed further. ")
-
-
-
-scenarios_location = iot23_scenarios_dir
-file_name_pattern = iot23_config['file_name_pattern']
-attack_files_location = iot23_attacks_dir
-experiments_location = iot23_experiments_dir
-check_config(scenarios_location, file_name_pattern, attack_files_location, experiments_location)

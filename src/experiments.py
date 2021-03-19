@@ -168,12 +168,21 @@ iot23_data_config = {
     "output_file_name": "_data_02.csv",
 }
 
-iot23_attack_files_ddos_okiru_hor_port_scan = [
-    "Benign.csv",
-    "DDoS.csv",
-    "Okiru.csv",
-    "PartOfAHorizontalPortScan.csv"
-]
+data_combinations = {
+    'Combination_1': {
+        "description": 'Combination_1 (4 classes)',
+        "files": ["Benign.csv",
+                  "DDoS.csv",
+                  "Okiru.csv",
+                  "PartOfAHorizontalPortScan.csv"],
+        "max_rows_per_file": 5_000_000,
+        "output_file_name": 'data_combination_1.scv'},
+    'Combination_2': {
+        "description": 'Combination_2 (all classes)',
+        "files": [],  # empty => combine all source files
+        "max_rows_per_file": 5_000_000,
+        "output_file_name": 'data_combination_2.scv'},
+}
 
 feature_combinations = {
     # All without:
@@ -235,65 +244,65 @@ feature_combinations = {
 experiment_definitions = {
     "EXP_FL16_FT12_R_": {
         "description": "Based on the second research; All attack types",
-        "attack_files": [],
+        "attack_files": data_combinations['Combination_2']['files'],
         "features": feature_combinations['iot23_F12_RESEARCH2'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT12_R_": {
         "description": "Based on the second research; All attack types",
-        "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
+        "attack_files": data_combinations['Combination_1']['files'],
         "features": feature_combinations['iot23_F12_RESEARCH2'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT14_R_": {
         "description": "Based on the research; All attack types",
-        "attack_files": [],
+        "attack_files": data_combinations['Combination_2']['files'],
         "features": feature_combinations['iot23_F14_RESEARCH1'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT14_R_": {
         "description": "Based on the research; All attack types",
-        "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
+        "attack_files": data_combinations['Combination_1']['files'],
         "features": feature_combinations['iot23_F14_RESEARCH1'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT17_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'; All attack types",
-        "attack_files": [],
+        "attack_files": data_combinations['Combination_2']['files'],
         "features": feature_combinations['iot23_F17'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT17_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'; All attack types",
-        "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
+        "attack_files": data_combinations['Combination_1']['files'],
         "features": feature_combinations['iot23_F17'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT18_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h'; All atack types",
-        "attack_files": [],
+        "attack_files": data_combinations['Combination_2']['files'],
         "features": feature_combinations['iot23_F18'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT18_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h'; All atack types",
-        "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
+        "attack_files": data_combinations['Combination_1']['files'],
         "features": feature_combinations['iot23_F18'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT19_R_": {
         "description": "All features without: 'ts', 'uid', 'label'; All attack types",
-        "attack_files": [],
+        "attack_files": data_combinations['Combination_2']['files'],
         "features": feature_combinations['iot23_F19'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT19_R_": {
         "description": "All features without: 'ts', 'uid', 'label'; All attack types",
-        "attack_files": iot23_attack_files_ddos_okiru_hor_port_scan,
+        "attack_files": data_combinations['Combination_1']['files'],
         "features": feature_combinations['iot23_F19'],
         "config": iot23_data_config,
     },

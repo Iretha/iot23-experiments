@@ -1,10 +1,45 @@
 import logging
 import time
+from os import path
 
 from sklearn.model_selection import train_test_split
 
 from src.helpers.dataframe_helper import df_get, df_transform_to_numeric, save_to_csv, df_encode_objects, write_to_csv
-from src.helpers.file_helper import overwrite_existing_file
+from src.helpers.file_helper import overwrite_existing_file, mk_dir, combine_files, shuffle_file_content
+from src.helpers.log_helper import log_duration
+
+
+def run_data_combinations(sources_dir,
+                          output_dir,
+                          header_line,
+                          data_combinations=[],
+                          overwrite=False):
+    logging.info("-----> Start data extraction for  . . . " + str(data_combinations))
+    start_time = time.time()
+
+    mk_dir(output_dir)
+
+    for data_combination in data_combinations:
+        source_files = data_combination["files"]
+        output_file_name = data_combination["output_file_name"]
+        max_rows = data_combination["max_rows_per_file"]
+
+        exists = path.exists(output_dir + output_file_name)
+        if overwrite is True or not exists:
+            # Combine slices from files
+            combine_files(sources_dir,
+                          source_files,
+                          output_dir,
+                          output_file_name,
+                          header_line=header_line,
+                          max_rows_from_file=max_rows,
+                          skip_rows=1)
+
+            # Shuffle content
+            shuffle_file_content(output_dir, output_file_name)
+        else:
+            logging.info("Data file " + output_file_name + " exists, skipping call...")
+    log_duration(start_time, '-----> Data extraction finished in')
 
 
 def select_features(data_dir, data_file_name, experiment_definition, delimiter='\s+'):

@@ -105,13 +105,13 @@ def preprocess_data(attack_files_dir,
     logging.info("****** Experiment data files are in " + data_dir)
 
 
-def split_scenarios_by_attack_type(dataset_location,
-                                   file_name_pattern,
-                                   output_dir,
-                                   header_line,
-                                   column_index=22,
-                                   sep='\s+',
-                                   max_size_in_mb=None):
+def split_scenarios_by_label(dataset_location,
+                             file_name_pattern,
+                             output_dir,
+                             header_line,
+                             column_index=22,
+                             sep='\s+',
+                             max_size_in_mb=None):
     logging.info("--> Start splitting file . . . ")
     start_time = time.time()
 
