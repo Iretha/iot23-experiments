@@ -7,6 +7,7 @@ from src.helpers.file_helper import find_files_recursively
 def check_config(scenarios_dir,
                  scenario_file_name_pattern,
                  attack_files_dir,
+                 data_dir,
                  experiments_dir):
     # Validate scenarios home_dir
     valid_scenarios_dir = os.path.exists(scenarios_dir)
@@ -25,6 +26,12 @@ def check_config(scenarios_dir,
     valid_attack_files_dir = os.path.exists(attack_files_dir)
     if not valid_attack_files_dir:
         logging.error("Please, make sure that attack files dir exists: " + attack_files_dir +
+                      " or go to config.py and setup another one.")
+
+    # Validate data files home_dir
+    valid_data_files_dir = os.path.exists(data_dir)
+    if not valid_data_files_dir:
+        logging.error("Please, make sure that data dir exists: " + data_dir +
                       " or go to config.py and setup another one.")
 
     # Validate experiments home_dir

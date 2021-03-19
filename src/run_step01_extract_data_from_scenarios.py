@@ -1,11 +1,14 @@
+import logging
+
 from config import iot23_attacks_dir, iot23_scenarios_dir
 from src.experiments import iot23_config
-from src.helpers.experiment_helper import split_scenarios_by_label
 from src.helpers.file_helper import delete_dir_content
 from src.helpers.log_helper import add_logger
+from src.helpers.st1_scenario_helper import split_scenarios_by_label
 
 # Add Logger
-add_logger(file_name='01_scenarios_extraction.log')
+add_logger(file_name='01_extract_data.log')
+logging.warning("!!! This step takes about 120 min to complete !!!")
 
 # Delete existing files in target dir
 output_dir = iot23_attacks_dir

@@ -1,6 +1,8 @@
 import logging
 import pandas as pd
 from os import path
+
+import sys
 import time
 
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler, MinMaxScaler
@@ -15,20 +17,22 @@ def df_transform_to_numeric(df, columns=[]):
     if len(columns) == 0:
         columns = list(df.select_dtypes(include=['object']).columns)
 
+    logging.info('Transform columns to numeric: ' + ', '.join(columns))
     for column_name in columns:
         df[column_name] = pd.to_numeric(df[column_name], errors='ignore')
 
-    logging.info('Transform columns to numeric: ' + ' ,'.join(columns))
     return df
 
 
 def df_encode_objects(df):
     ord_enc = OrdinalEncoder()
     obj_column_names = list(df.select_dtypes(include=['object']).columns)
+    logging.info('Encode object columns: ' + ', '.join(obj_column_names))
     for obj_column_name in obj_column_names:
-        df[obj_column_name] = ord_enc.fit_transform(df[[obj_column_name]])
-
-    logging.info('Encode object columns: ' + ' ,'.join(obj_column_names))
+        try:
+            df[obj_column_name] = ord_enc.fit_transform(df[[obj_column_name]])
+        except:
+            logging.error("Oops! Could not transform values in col= " + obj_column_name, sys.exc_info()[0])
 
 
 # TODO two save-s

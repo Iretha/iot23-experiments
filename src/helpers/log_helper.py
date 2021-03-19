@@ -16,5 +16,5 @@ def log_duration(start_time, msg):
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
-    logging.info(msg + " in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+    logging.info(msg + " %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
 

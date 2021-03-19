@@ -9,6 +9,8 @@ from pathlib import Path
 from os import walk
 import json
 
+from src.helpers.log_helper import log_duration
+
 
 def mk_dir(dir_path):
     Path(dir_path).mkdir(parents=True, exist_ok=True)
@@ -49,10 +51,7 @@ def combine_files_content(source_files,
             logging.info(str(file_counter) + '. Read data from file: ' + file_path)
             write_file_content(file_path, target_file, max_rows_from_file=max_rows_from_file, skip_rows=skip_rows)
 
-    end_time = time.time()
-    exec_time_seconds = (end_time - start_time)
-    exec_time_minutes = exec_time_seconds / 60
-    logging.info("-----> Mixing data finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+    log_duration(start_time, '-----> Mixing data finished in')
 
 
 def write_file_content(source_file_path,
@@ -204,7 +203,7 @@ def write_json_file(output_path, data):
 
 
 def delete_dir_content(iot23_output_directory):
-    files = glob.glob(iot23_output_directory + '/*')
+    files = glob(iot23_output_directory + '/*')
     for f in files:
         os.remove(f)
 

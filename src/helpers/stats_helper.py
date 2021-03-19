@@ -12,23 +12,23 @@ from sklearn.utils.multiclass import unique_labels
 from src.experiments import iot23_data_config, experiment_definitions, get_exp_def_name_by_experiment, get_exp_features
 
 
-def print_correlations(output_dir,
-                       corr,
-                       title="Correlations",
-                       file_name="correlations.png",
-                       export=True):
+def plot_correlations(output_dir,
+                      corr,
+                      title="Correlations",
+                      file_name="correlations.png",
+                      export=True):
     columns_count = len(corr.columns)
     file_path = output_dir + file_name
 
     plt.style.use('ggplot')
     fig, ax = plt.subplots(figsize=[columns_count, columns_count])
-    fig.suptitle(title, fontsize=18)
+    fig.suptitle(title, fontsize=20)
     ax = sns.heatmap(corr, annot=True, fmt='.0%', cmap='Greens', ax=ax)
 
     export_sns(fig, file_path, export=export)
 
 
-def print_class_value_distribution(output_dir, df, col_name, title="Class Frequency", file_name="data_distribution.png", export=True):
+def plot_class_values_distribution(output_dir, df, col_name, title="Class Frequency", file_name="data_distribution.png", export=True):
     unique, counts = np.unique(df[col_name], return_counts=True)
     values = counts
     x_values = unique
@@ -36,11 +36,12 @@ def print_class_value_distribution(output_dir, df, col_name, title="Class Freque
     file_path = output_dir + file_name
     x = decode_labels(x_values)
     x_pos = [i for i, _ in enumerate(x)]
-    cnt = len(x) + 2
+    size = len(x)
+    cnt = size + 2 if size < 5 else size * 0.4
 
     plt.style.use('ggplot')
     fig, ax = plt.subplots(figsize=(cnt, cnt))
-    fig.subplots_adjust(bottom=0.2, left=0.2, top=0.75)
+    fig.subplots_adjust(bottom=0.15, left=0.15, top=0.8)
     fig.suptitle(title, fontsize=18)
     ax.bar(x_pos, values, color='orange', alpha=0.6)
     # ax.set_title(title)
@@ -83,11 +84,11 @@ def display_feature_distribution(output_dir, df, file_name="feature_distribution
     export_plt(file_path)
 
 
-def print_attribute_distribution(output_dir,
-                                 df,
-                                 title='Attribute Distribution',
-                                 file_name='attr_distribution.png',
-                                 export=True):
+def plot_attr_values_distribution(output_dir,
+                                  df,
+                                  title='Attribute Distribution',
+                                  file_name='attr_distribution.png',
+                                  export=True):
     file_path = output_dir + file_name
     columns_count = len(df.columns)
 

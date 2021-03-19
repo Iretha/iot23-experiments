@@ -13,7 +13,7 @@ from src.experiments import get_test_data_path, get_train_data_path
 from src.helpers.dataframe_helper import df_get, load_data
 from src.helpers.file_helper import mk_dir, write_json_file
 from src.helpers.model_helper import load_model, score_model
-from src.helpers.stats_helper import print_correlations, print_class_value_distribution, print_scatter_matrix, print_attribute_distribution, plot_confusion_ma3x, plot_roc_curve, \
+from src.helpers.stats_helper import plot_correlations, plot_class_values_distribution, print_scatter_matrix, plot_attr_values_distribution, plot_confusion_ma3x, plot_roc_curve, \
     plot_roc_curve_custom, plot_precision_recall_curve_custom, plot_confusion_ma3x_v2, plot_feature_importance
 from src.helpers.xls_helper import export_stats_xls
 
@@ -266,24 +266,24 @@ def export_data_chart_images(experiment_name,
                              df,
                              prefix='',
                              export=True):
-    print_correlations(stats_location,
-                       df.corr(),
-                       title='\n' + experiment_name + '\n\n' + "Correlations",
-                       file_name=prefix + "_correlations.png",
-                       export=export)
+    plot_correlations(stats_location,
+                      df.corr(),
+                      title='\n' + experiment_name + '\n\n' + "Correlations",
+                      file_name=prefix + "_correlations.png",
+                      export=export)
 
-    print_class_value_distribution(stats_location,
+    plot_class_values_distribution(stats_location,
                                    df,
                                    class_col_name,
                                    title='\n' + experiment_name + '\n\n' + "Class Frequency",
                                    file_name=prefix + "class_values_distribution.png",
                                    export=export)
 
-    print_attribute_distribution(stats_location,
-                                 df,
-                                 title='\n' + experiment_name + '\n\n' + "Attribute Distribution",
-                                 file_name=prefix + "attr_distribution.png",
-                                 export=export)
+    plot_attr_values_distribution(stats_location,
+                                  df,
+                                  title='\n' + experiment_name + '\n\n' + "Attribute Distribution",
+                                  file_name=prefix + "attr_distribution.png",
+                                  export=export)
 
     # print_scatter_matrix(stats_location,
     #                      df,
