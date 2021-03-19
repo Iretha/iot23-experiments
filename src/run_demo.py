@@ -4,7 +4,8 @@ import sklearn
 import warnings
 
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 from config import iot23_experiments_dir, iot23_attacks_dir
 from src.experiments import experiment_definitions, iot23_data_config
@@ -32,6 +33,7 @@ def run_demo(experiments_dir,
              output_data_file,
              classification_col,
              combined_stats_xlsx_file_name="combined_stats.xlsx",
+             prepare_data=False,
              override_models_if_exist=False,
              export_data_charts=True,
              export_score_tables=True,
@@ -42,6 +44,7 @@ def run_demo(experiments_dir,
                     experiments,
                     rows_per_attack,
                     training_algorithms,
+                    prepare_data=prepare_data,
                     override=override_models_if_exist)
 
     # Run Reports
@@ -64,20 +67,27 @@ demo_experiments_dir = iot23_experiments_dir
 demo_attack_files_dir = iot23_attacks_dir
 
 demo_classification_col = iot23_data_config["classification_col"]
-demo_rows_per_attack = [1_000, 10_000]
+demo_rows_per_attack = [100_000]
 demo_training_algorithms = dict([
     # ('GaussianNB', GaussianNB()),
-    ('DecisionTree', DecisionTreeClassifier()),
+    # ('DecisionTree', DecisionTreeClassifier()),
     # ('Perceptron', Perceptron()),
-    ('RandomForest', RandomForestClassifier()),
+    ('RandomForest_mm', Pipeline([
+        ('normalization', MinMaxScaler()),
+        ('classifier', RandomForestClassifier())
+    ])),
+    ('RandomForest_ss', Pipeline([
+        ('normalization', StandardScaler()),
+        ('classifier', RandomForestClassifier())
+    ])),
     # ('AdaBoost', AdaBoostClassifier()),
     # ('LogisticRegression', LogisticRegression()),
     # ('MLPClassifier', MLPClassifier()),
     # ('GradientBoosting', GradientBoostingClassifier()),
 ])
 demo_selected_experiment_definitions = [
-    "EXP_FL4_FT12_R_",
-    "EXP_FL16_FT12_R_",
+    "EXP_FL4_FT14_R_",
+    "EXP_FL16_FT14_R_",
 ]
 # demo_experiments = all_experiment_definitions
 demo_experiments = demo_selected_experiment_definitions
@@ -91,6 +101,7 @@ run_demo(demo_experiments_dir,
          demo_output_data_file,
          demo_classification_col,
          demo_combined_stats_xlsx_file_name,
+         prepare_data=True,
          override_models_if_exist=False,
          export_data_charts=True,
          export_score_tables=True,

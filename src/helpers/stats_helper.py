@@ -28,14 +28,6 @@ def print_correlations(output_dir,
     export_sns(fig, file_path, export=export)
 
 
-def export_sns(fig, file_path, export=True):
-    if export:
-        fig.savefig(file_path)
-        plt.close()
-    else:
-        plt.show()
-
-
 def print_class_value_distribution(output_dir, df, col_name, title="Class Frequency", file_name="data_distribution.png", export=True):
     unique, counts = np.unique(df[col_name], return_counts=True)
     values = counts
@@ -239,5 +231,15 @@ def export_plt(file_path, export=True):
     if export:
         plt.savefig(file_path)
         plt.close()
+        plt.cla()
+    else:
+        plt.show()
+
+
+def export_sns(fig, file_path, export=True):
+    if export:
+        fig.savefig(file_path)
+        plt.close()
+        plt.cla()
     else:
         plt.show()

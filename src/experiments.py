@@ -310,3 +310,11 @@ def get_exp_features(experiment_name):
     exp_def_name = get_exp_def_name_by_experiment(experiment_name)
     exp_def = experiment_definitions[exp_def_name]
     return exp_def['features']
+
+
+def get_train_data_path(file_path):
+    return file_path + '_train.csv'
+
+
+def get_test_data_path(file_path):
+    return file_path + '_test.csv'

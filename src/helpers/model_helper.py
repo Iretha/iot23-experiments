@@ -3,22 +3,28 @@ import pickle
 import logging
 import sys
 import time
-import psutil
 
 from sklearn.metrics import accuracy_score, classification_report
-from sklearn.preprocessing import StandardScaler
-from src.helpers.dataframe_helper import load_data, scale_data
-from src.helpers.stats_helper import plot_roc_curve
+from sklearn.preprocessing import MinMaxScaler
+
+from src.experiments import get_train_data_path, get_test_data_path
+from src.helpers.dataframe_helper import load_data
 
 
-def save_trained_model(model, model_dir=None, model_name=None, model_name_suffix=None):
+def save_trained_model(model, model_dir=None, model_name=None, model_name_suffix=None, scaler=None):
     if model_name is None:
         model_name = model.__class__.__name__
 
     model_path = calc_model_path(model_dir, model_name, model_name_suffix)
 
+    # Save Model
     with open(model_path, 'wb') as file:
         pickle.dump(model, file)
+
+    # Save Scaler
+    if scaler is not None:
+        with open(model_path + '_sc.pkl', 'wb') as file:
+            pickle.dump(model, file)
 
     logging.info('Model saved: ' + model_path)
     return model_path
@@ -57,34 +63,34 @@ def load_models(model_names, model_dir, ext='.pkl'):
     return trained_models
 
 
-def train_model(model, x_train, y_train):
-    model_name = model.__class__.__name__
-    start_time = time.time()
-
+def train_model(model_dir, model_name, model, x_train, y_train, save_model=False):
     logging.info("=====> Train " + model_name + " . . .")
+
+    start_time = time.time()
 
     model.fit(x_train, y_train)
 
-    # y_score = cls.decision_function(x_test)
-
     exec_time_seconds = (time.time() - start_time)
     exec_time_minutes = exec_time_seconds / 60
-
     logging.info("=====> Training of " + model_name + " finished in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
+
+    if save_model:
+        try:
+            save_trained_model(model, model_dir, model_name=model_name)
+        except:
+            logging.error("Oops! Could not save model " + model_name, sys.exc_info()[0], " occurred.")
+
     return model
 
 
 def train_models(models, x_train, y_train, model_dir=None, override_model=False):
     model_names = models.keys()
     trained_models = {}
+
     for model_name in model_names:
         if model_not_exists(model_dir, model_name) or override_model:
             try:
-                model = train_model(models[model_name], x_train, y_train)
-                try:
-                    save_trained_model(model, model_dir, model_name=model_name)
-                except:
-                    logging.error("Oops! Could not save model " + model_name, sys.exc_info()[0], " occurred.")
+                model = train_model(model_dir, model_name, models[model_name], x_train, y_train, save_model=True)
             except:
                 logging.error("Oops! Could not finish training of " + model_name, sys.exc_info()[0], " occurred.")
             trained_models[model_name] = model
@@ -109,6 +115,7 @@ def score_model(model_name, model, x_test, y_test, prefix='', labels=None, title
     adv_stats = {}
 
     start_time = time.time()
+    # x_test = model.fit_transform(x_test)
     predictions = model.predict(x_test)
 
     pred_time_in_sec = time.time() - start_time
@@ -162,7 +169,7 @@ def create_models(file_path, models, classification_col_name, model_dir, feature
     start_time = time.time()
 
     # Load Data
-    x_train, y_train, x_test, y_test = load_data(file_path, classification_col_name, features=features)
+    x_train, y_train = load_data(get_train_data_path(file_path), classification_col_name, features=features)
 
     # Create Models
     try:
@@ -181,7 +188,7 @@ def score_trained_models(file_path, model_names, classification_col_name, model_
     start_time = time.time()
 
     # Load Data
-    x_train, y_train, x_test, y_test = load_data(file_path, classification_col_name, features=features)
+    x_test, y_test = load_data(get_test_data_path(file_path), classification_col_name, features=features, scaler=MinMaxScaler())
 
     # Load Models
     trained_models = load_models(model_names, model_dir)

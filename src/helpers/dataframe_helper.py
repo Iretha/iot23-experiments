@@ -3,7 +3,7 @@ import pandas as pd
 from os import path
 import time
 
-from sklearn.preprocessing import OrdinalEncoder, StandardScaler
+from sklearn.preprocessing import OrdinalEncoder, StandardScaler, MinMaxScaler
 
 
 def df_get(file_path, delimiter='\t', header=0):
@@ -45,48 +45,49 @@ def write_to_csv(df, dest_file_path, mode='a'):
     logging.info('File saved: ' + dest_file_path)
 
 
-def scale_data(x_train, x_test, scaler):
+def scale_data(x_data, scaler):
     logging.info("-----> Scale data . . . ")
     start_time = time.time()
 
-    scaler.fit(x_train)
-    x_train = scaler.transform(x_train)
-    x_test = scaler.transform(x_test)
+    scaler.fit(x_data)
+    x_data = scaler.transform(x_data)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("-----> Data scaled in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
-    return x_train, x_test
+    return x_data
 
 
-def load_data_into_frame(data_file_path, classification_col_name, columns=[]):
-    # logging.info('Loading df from ' + data_file_path)
+def load_data_into_frame(data_file_path, classification_col_name, columns=[], scaler=None):
+    # Load data in df
     df = df_get(data_file_path, delimiter=',')
 
+    # Select columns
     if len(columns) == 0:
         columns = list(df.columns)
 
+    # Select features
     selected_features = [x for x in columns if x not in [classification_col_name]]
     y = df[classification_col_name]
     x = df[selected_features]
+
+    # Scale data
+    if scaler is not None:
+        x = scale_data(x, scaler)
+
     return x, y
 
 
-def load_data(file_path, classification_col_name, features=[], scale=True):
+def load_data(file_path, classification_col_name, features=[], scaler=None):
     logging.info("-----> Load data ")
     start_time = time.time()
 
     # Load data
-    x_train, y_train = load_data_into_frame(file_path + '_train.csv', classification_col_name, columns=features)
-    x_test, y_test = load_data_into_frame(file_path + '_test.csv', classification_col_name, columns=features)
-
-    # Scale data
-    if scale:
-        x_train, x_test = scale_data(x_train, x_test, StandardScaler())
+    x, y = load_data_into_frame(file_path, classification_col_name, columns=features, scaler=scaler)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
     exec_time_minutes = exec_time_seconds / 60
     logging.info("-----> Data loaded in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
-    return x_train, y_train, x_test, y_test
+    return x, y

@@ -8,6 +8,8 @@ import time
 import psutil
 
 from sklearn.metrics import classification_report
+
+from src.experiments import get_test_data_path, get_train_data_path
 from src.helpers.dataframe_helper import df_get, load_data
 from src.helpers.file_helper import mk_dir, write_json_file
 from src.helpers.model_helper import load_model, score_model
@@ -54,7 +56,7 @@ def run_report(experiments_dir,
 
     # Load data
     data_file_path = experiment_location + "\\data\\" + data_file
-    x_train, y_train, x_test, y_test = load_data(data_file_path, class_col_name)
+    x_test, y_test = load_data(get_test_data_path(data_file_path), class_col_name)
 
     # Export Data Charts
     export_data_stats(experiment_name,
@@ -240,7 +242,7 @@ def export_data_stats(experiment_name,
                              export=True)
 
     # Train Data Stats
-    df_train = df_get(source_file_path + '_train.csv', delimiter=',')
+    df_train = df_get(get_train_data_path(source_file_path), delimiter=',')
     export_data_chart_images(experiment_name,
                              results_path,
                              class_col_name,
@@ -249,7 +251,7 @@ def export_data_stats(experiment_name,
                              export=True)
 
     # Test Data Stats
-    df_test = df_get(source_file_path + '_test.csv', delimiter=',')
+    df_test = df_get(get_test_data_path(source_file_path), delimiter=',')
     export_data_chart_images(experiment_name,
                              results_path,
                              class_col_name,

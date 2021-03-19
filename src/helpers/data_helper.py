@@ -37,12 +37,12 @@ def select_features(data_dir, data_file_name, experiment_definition, delimiter='
     logging.info("-----> Features selected in %s seconds = %s minutes ---" % (exec_time_seconds, exec_time_minutes))
 
 
-def clean_data_in_file(source_dir,
-                       source_file,
-                       output_dir,
-                       output_file,
-                       experiment_definition,
-                       delimiter=','):
+def clean_data(source_dir,
+               source_file,
+               output_dir,
+               output_file,
+               experiment_definition,
+               delimiter=','):
     logging.info("-----> Clean data... ")
     start_time = time.time()
 
@@ -70,7 +70,7 @@ def clean_data_in_file(source_dir,
         logging.info('Replace cat values: ' + str(category_encoding))
         dataframe.replace(category_encoding, inplace=True)
 
-    # Convert to numeric if possible
+    # Convert to numeric (if possible)
     transform_to_numeric = filter_list(df_columns, experiment_definition['config']["transform_to_numeric"])
     if len(transform_to_numeric) > 0:
         df_transform_to_numeric(dataframe, transform_to_numeric)
@@ -78,7 +78,7 @@ def clean_data_in_file(source_dir,
     # Encode what is left
     df_encode_objects(dataframe)
 
-    # Save cleaned data to file
+    # Save cleaned data to a file
     save_to_csv(dataframe, output_dir, output_file, append=False)
 
     end_time = time.time()

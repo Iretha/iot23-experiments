@@ -2,7 +2,11 @@ import logging
 import pandas as pd
 import warnings
 import sklearn
-from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 
@@ -14,7 +18,7 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S', handlers=[
-        logging.FileHandler("..\logs\experiment_execution.log"),
+        logging.FileHandler("..\logs\experiment_execution_with_pipeline.log"),
         logging.StreamHandler()
     ])
 
@@ -29,15 +33,17 @@ warnings.filterwarnings("ignore", category=sklearn.exceptions.UndefinedMetricWar
 warnings.filterwarnings("ignore", category=sklearn.exceptions.ConvergenceWarning)
 
 training_algorithms = dict([
-    # ('DecisionTree', DecisionTreeClassifier()),  # 5 mil = 2 min
-    # ('GaussianNB', GaussianNB()),  # 5 mil = 5 sec
-    # ('LogisticRegression_Multi-Class', LogisticRegression(multi_class='multinomial')),  # 5 mil = 22 min
-    # ('RandomForest', RandomForestClassifier()),  # 5 mil = 52 min
+    # ('DecisionTree', Pipeline([('normalization', MinMaxScaler()), ('classifier', DecisionTreeClassifier())])),  # 5 mil = 2 min
+    # ('GaussianNB', Pipeline([('normalization', StandardScaler()), ('classifier', GaussianNB())])),  # 5 mil = 11 sec
+    # ('LogisticRegression', Pipeline([('normalization', StandardScaler()), ('classifier', LogisticRegression())])),  # 5 mil = 21 min
+    # ('RandomForest', Pipeline([('normalization', StandardScaler()), ('classifier', RandomForestClassifier())])),  # 5 mil = 48 min
+    # ('SVC_linear', Pipeline([('normalization', MinMaxScaler()), ('classifier', LinearSVC())])),  # 5 mil = 44 min
+    ('AdaBoost_Decision_Tree', Pipeline([('normalization', StandardScaler()), ('classifier', AdaBoostClassifier(DecisionTreeClassifier(max_depth=2), n_estimators=1000))])), # 5 mil = ?
+    ('AdaBoost', Pipeline([('normalization', MinMaxScaler()), ('classifier', AdaBoostClassifier(n_estimators=1000))])),  # 5 mil = 2 min
+
     # ('MLPClassifier', MLPClassifier()),  # 8.313 min
     # ('SVC_Multi-Class', LinearSVC(c=1.0, max_iter=1000)),  # 5 mil= 14h
-    # ('AdaBoost_Decision_Tree', AdaBoostClassifier(DecisionTreeClassifier())),  # 6.426 min
-    ('SVC_linear', LinearSVC()),  # 47.565 min
-
+    # ('SVC_linear', LinearSVC()),  # 47.565 min
     # ('KNeighborsClassifier', KNeighborsClassifier(n_neighbors=3)),  # 0.293 sec
     # ('Perceptron', Perceptron()),  # 25.717 sec
 ])
@@ -63,8 +69,8 @@ run_experiments(iot23_experiments_dir,
                 exp_list_selected,
                 rows_per_attack,
                 training_algorithms,
-                override=False,
-                prepare_data=True)
+                override=True,
+                prepare_data=False)
 
 print('The end.')
 

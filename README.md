@@ -24,7 +24,7 @@ No  | Name          | Version          | Description
 >* **iot23_attacks_dir** will be used to store files for each attack type from the scenarios files
 >* **iot23_experiments_dir** will be used to store experiment files, including trained models and results
 5. Run configuration check by running **run_configuration_check.py**
-> Make sure the output message says that you may continue with the next step. If not, then check 
+> Make sure the output message says that you may continue to the next step. If not, then check 
 > your configuration and fix the errors.
 
 ## 3. (Step 2) Extract Attacks from Scenarios

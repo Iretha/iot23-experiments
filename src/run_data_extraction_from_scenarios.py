@@ -10,7 +10,7 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S', handlers=[
-        logging.FileHandler("..\logs\exp_exec.log"),
+        logging.FileHandler("..\logs\data_extraction.log"),
         logging.StreamHandler()
     ])
 
