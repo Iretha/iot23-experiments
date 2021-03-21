@@ -24,3 +24,4 @@ split_scenarios_by_label(source_dir,
                          header_line)
 
 print('Step 01: The End')
+quit()

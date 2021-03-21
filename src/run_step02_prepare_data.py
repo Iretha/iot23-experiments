@@ -27,3 +27,4 @@ prepare_data(source_files_dir,
              overwrite=True)
 
 print('Step 02: The end.')
+quit()

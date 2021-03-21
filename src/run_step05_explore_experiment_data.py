@@ -30,3 +30,4 @@ explore_experiments_data(exp_home_dir,
                          plot_attr_dist=True)
 
 print('Step 05: The end.')
+quit()

@@ -19,3 +19,4 @@ check_config(scenarios_location,
              experiments_location)
 
 print('Step 00: The End')
+quit()

@@ -344,58 +344,66 @@ feature_combinations = {
 
     # All without:
     # 'ts', 'uid', 'label'
-    "F19": [
-        'id.orig_h', 'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
-        'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-        'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
-        'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
-        'detailed-label'
-    ],
+    "F19": {
+        "description": 'F19',
+        "features": [
+            'id.orig_h', 'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
+            'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+            'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
+            'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
+            'detailed-label'
+        ]},
 
     # EXP_FL16_FT18_R_ / EXP_FL4_FT18_R_
     # All without:
     # 'ts', 'uid', 'label', 'id.orig_h'
-    "F18": [
-        'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
-        'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-        'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
-        'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
-        'detailed-label'
-    ],
+    "F18": {
+        "description": 'F18',
+        "features": [
+            'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
+            'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+            'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
+            'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
+            'detailed-label'
+        ]},
 
     # EXP_FL16_FT17_R_ / EXP_FL4_FT17_R_
     # All without:
     # 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'
-    "F17": [
-        'id.orig_p', 'id.resp_p', 'proto',
-        'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-        'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
-        'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
-        'detailed-label'
-    ],
+    "F17": {
+        "description": 'F17',
+        "features": [
+            'id.orig_p', 'id.resp_p', 'proto',
+            'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+            'local_orig', 'local_resp', 'missed_bytes', 'history', 'orig_pkts',
+            'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes', 'tunnel_parents',
+            'detailed-label'
+        ]},
 
-    # EXP_FL16_FT14_R_ / EXP_FL4_FT14_R_
-    # All without:
-    # 'ts', 'uid', 'label', 'id.orig_h', 'local_orig',
-    # 'local_resp', 'missed_bytes',  'tunnel_parents'
-    "F14_": [
-        'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
-        'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-        'history', 'orig_pkts',
-        'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
-        'detailed-label'
-    ],
-
-    # EXP_FL16_FT12_R_ / EXP_FL14_FT12_R_
-    # All without:
-    # 'ts', 'uid', 'label', 'id.orig_h', 'service', 'history'
-    # 'local_orig', 'local_resp', 'missed_bytes',  'tunnel_parents'
-    "F12": [
-        'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
-        'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
-        'orig_pkts', 'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
-        'detailed-label'
-    ],
+    # # EXP_FL16_FT14_R_ / EXP_FL4_FT14_R_
+    # # All without:
+    # # 'ts', 'uid', 'label', 'id.orig_h', 'local_orig',
+    # # 'local_resp', 'missed_bytes',  'tunnel_parents'
+    # "F14_": [
+    #     'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
+    #     'service', 'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+    #     'history', 'orig_pkts',
+    #     'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
+    #     'detailed-label'
+    # ],
+    #
+    # # EXP_FL16_FT12_R_ / EXP_FL14_FT12_R_
+    # # All without:
+    # # 'ts', 'uid', 'label', 'id.orig_h', 'service', 'history'
+    # # 'local_orig', 'local_resp', 'missed_bytes',  'tunnel_parents'
+    "F12": {
+        "description": 'F12',
+        "features": [
+            'id.orig_p', 'id.resp_h', 'id.resp_p', 'proto',
+            'duration', 'orig_bytes', 'resp_bytes', 'conn_state',
+            'orig_pkts', 'orig_ip_bytes', 'resp_pkts', 'resp_ip_bytes',
+            'detailed-label'
+        ]},
 }
 
 experiment_definitions = {

@@ -6,6 +6,7 @@ import numpy as np
 import scikitplot as sk_plt
 import sys
 from pandas.plotting import scatter_matrix
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import plot_confusion_matrix, roc_curve, auc, plot_roc_curve
 from sklearn.utils.multiclass import unique_labels
 
@@ -16,6 +17,7 @@ def plot_correlations(output_dir,
                       corr,
                       title="Correlations",
                       file_name="correlations.png",
+                      abs_mode=True,
                       export=True):
     columns_count = len(corr.columns)
     file_path = output_dir + file_name
@@ -23,8 +25,11 @@ def plot_correlations(output_dir,
     plt.style.use('ggplot')
     fig, ax = plt.subplots(figsize=[columns_count, columns_count])
     fig.suptitle(title, fontsize=20)
-    ax = sns.heatmap(corr, annot=True, fmt='.0%', cmap='Greens', ax=ax)
 
+    if abs_mode:
+        corr = corr.abs()
+
+    ax = sns.heatmap(corr, annot=True, fmt='.0%', cmap='Greens', ax=ax)
     export_sns(fig, file_path, export=export)
 
 
@@ -168,12 +173,29 @@ def plot_roc_curve_custom(output_dir,
                           experiment_name,
                           title="ROC Curve",
                           file_name="roc_curve.png"):
+    y_prob = None
+    y_decision_auc = None
     try:
         y_prob = model.predict_proba(x_test)
-        sk_plt.metrics.plot_roc(y_true, y_prob, title=title, cmap='nipy_spectral')
-        export_plt(output_dir + file_name)
     except:
-        logging.error("Oops! Could not export ROC curve for model " + model_name, sys.exc_info()[0], " occurred.")
+        try:
+            y_decision_auc = model.decision_function(x_test)
+        except:
+            logging.error("Oops! Could not export ROC curve for model " + model_name)
+
+    if y_prob is not None:
+        try:
+            sk_plt.metrics.plot_roc(y_true, y_prob, title=title, cmap='nipy_spectral')
+            export_plt(output_dir + file_name)
+        except:
+            logging.error("Oops! Could not plot_roc 1 curve for model " + model_name)
+
+    if y_decision_auc is not None:
+        try:
+            sk_plt.metrics.plot_roc(y_true, y_decision_auc, title=title, cmap='nipy_spectral')
+            export_plt(output_dir + 'auc_' + file_name)
+        except:
+            logging.error("Oops! Could not plot_roc 2 curve for model " + model_name)
 
 
 def plot_precision_recall_curve_custom(output_dir,
@@ -189,7 +211,7 @@ def plot_precision_recall_curve_custom(output_dir,
         sk_plt.metrics.plot_precision_recall(y_true, y_prob, title=title, cmap='nipy_spectral')
         export_plt(output_dir + file_name)
     except:
-        logging.error("Oops! Could not export ROC curve for model " + model_name, sys.exc_info()[0], " occurred.")
+        logging.error("Oops! Could not export ROC curve for model " + model_name)
 
 
 # def plot_cumulative_gain_custom(output_dir, model, model_name, x_test, y_true, title="Feature Importance", file_name="feat_importance.png"):

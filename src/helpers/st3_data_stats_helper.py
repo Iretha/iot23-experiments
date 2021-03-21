@@ -83,6 +83,7 @@ def explore_data(data_file_path,
                           df.corr(),
                           title='\n' + info + '\n\n' + "Correlations",
                           file_name=output_file_name_prefix + "_correlations.png",
+                          abs_mode=True,
                           export=True)
 
     # Data distribution per class
