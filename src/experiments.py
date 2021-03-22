@@ -263,15 +263,15 @@ data_cleanup_conf = {
             "C&C-HeartBeat": 4,
             "C&C-HeartBeat-Attack": 5,
             "C&C-HeartBeat-FileDownload": 6,
-            "C&C-Mirai": 7,
-            "C&C-PartOfAHorizontalPortScan": 8,
-            "C&C-Torii": 9,
-            "DDoS": 10,
-            "FileDownload": 11,
-            "Okiru": 12,
-            "Okiru-Attack": 13,
-            "PartOfAHorizontalPortScan": 14,
-            "PartOfAHorizontalPortScan-Attack": 15
+            "C&C-PartOfAHorizontalPortScan": 7,
+            "C&C-Torii": 8,
+            "DDoS": 9,
+            "FileDownload": 10,
+            "Okiru": 11,
+            "PartOfAHorizontalPortScan": 12,
+            "PartOfAHorizontalPortScan-Attack": 13,
+            "C&C-Mirai": 14,
+            "Okiru-Attack": 15,
         },
         "label": {
             "benign": 0,
@@ -295,36 +295,57 @@ data_cleanup_conf = {
 }
 
 data_combinations = {
-    'FL04_R_100_000': {
-        "description": 'FL04_R_100_000',
+    'S04_R_5_000_000': {
+        "description": 'S04_R_5_000_000',
         "files": ["Benign.csv",
                   "DDoS.csv",
                   "Okiru.csv",
                   "PartOfAHorizontalPortScan.csv"],
+        "max_rows_per_file": 5_000_000,
+        "combined_data_file_name": 'S04_R_5_000_000.csv',
+        "clean_data_file_name": 'S04_R_5_000_000_clean.csv'},
+    'S13_R_100_000': {
+        "description": 'S13_R_100_000',
+        "files": ['Attack.csv',
+                  'Benign.csv',
+                  'C&C.csv',
+                  'C&C-FileDownload.csv',
+                  'C&C-HeartBeat.csv',
+                  'C&C-HeartBeat-Attack.csv',
+                  'C&C-HeartBeat-FileDownload.csv',
+                  'C&C-PartOfAHorizontalPortScan.csv',
+                  'C&C-Torii.csv',
+                  'DDoS.csv',
+                  'FileDownload.csv',
+                  'Okiru.csv',
+                  'PartOfAHorizontalPortScan.csv'],
         "max_rows_per_file": 100_000,
-        "combined_data_file_name": 'FL04_R_100_000.csv',
-        "clean_data_file_name": 'FL04_R_100_000_clean.csv'},
-    'FL04_R_5_000_000': {
-        "description": 'FL04_R_5_000_000',
-        "files": ["Benign.csv",
-                  "DDoS.csv",
-                  "Okiru.csv",
-                  "PartOfAHorizontalPortScan.csv"],
+        "combined_data_file_name": 'S13_R_100_000.scv',
+        "clean_data_file_name": 'S13_R_100_000_clean.csv'},
+    'S13_R_5_000_000': {
+        "description": 'S13_R_5_000_000',
+        "files": ['Attack.csv',
+                  'Benign.csv',
+                  'C&C.csv',
+                  'C&C-FileDownload.csv',
+                  'C&C-HeartBeat.csv',
+                  'C&C-HeartBeat-Attack.csv',
+                  'C&C-HeartBeat-FileDownload.csv',
+                  'C&C-PartOfAHorizontalPortScan.csv',
+                  'C&C-Torii.csv',
+                  'DDoS.csv',
+                  'FileDownload.csv',
+                  'Okiru.csv',
+                  'PartOfAHorizontalPortScan.csv'],
         "max_rows_per_file": 5_000_000,
-        "combined_data_file_name": 'FL04_R_5_000_000.csv',
-        "clean_data_file_name": 'FL04_R_5_000_000_clean.csv'},
-    'FL16_R_100_000': {
-        "description": 'FL16_R_100_000',
-        "files": [],  # empty => combine all source files
-        "max_rows_per_file": 200_000,
-        "combined_data_file_name": 'FL16_R_100_000.scv',
-        "clean_data_file_name": 'FL16_R_100_000_clean.csv'},
-    'FL16_R_5_000_000': {
-        "description": 'FL16_R_5_000_000',
-        "files": [],  # empty => combine all source files
-        "max_rows_per_file": 5_000_000,
-        "combined_data_file_name": 'FL16_R_5_000_000.scv',
-        "clean_data_file_name": 'FL16_R_5_000_000_clean.csv'},
+        "combined_data_file_name": 'S13_R_5_000_000.scv',
+        "clean_data_file_name": 'S13_R_5_000_000_clean.csv'},
+    # 'S16_R_5_000_000': {
+    #     "description": 'S16_R_5_000_000',
+    #     "files": [],  # empty => combine all source files
+    #     "max_rows_per_file": 5_000_000,
+    #     "combined_data_file_name": 'S16_R_5_000_000.scv',
+    #     "clean_data_file_name": 'S16_R_5_000_000_clean.csv'},
 }
 
 feature_combinations = {
@@ -409,65 +430,65 @@ feature_combinations = {
 experiment_definitions = {
     "EXP_FL16_FT12_R_": {
         "description": "Based on the second research; All attack types",
-        "attack_files": data_combinations['FL16_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F12'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT12_R_": {
         "description": "Based on the second research; All attack types",
-        "attack_files": data_combinations['FL04_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F12'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT14_R_": {
         "description": "Based on the research; All attack types",
-        "attack_files": data_combinations['FL16_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F14'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT14_R_": {
         "description": "Based on the research; All attack types",
-        "attack_files": data_combinations['FL04_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F14'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT17_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'; All attack types",
-        "attack_files": data_combinations['FL16_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F17'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT17_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h', 'id.resp_h'; All attack types",
-        "attack_files": data_combinations['FL04_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F17'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT18_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h'; All atack types",
-        "attack_files": data_combinations['FL16_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F18'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT18_R_": {
         "description": "All features without: 'ts', 'uid', 'label', 'id.orig_h'; All atack types",
-        "attack_files": data_combinations['FL04_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F18'],
         "config": iot23_data_config,
     },
 
     "EXP_FL16_FT19_R_": {
         "description": "All features without: 'ts', 'uid', 'label'; All attack types",
-        "attack_files": data_combinations['FL16_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F19'],
         "config": iot23_data_config,
     },
     "EXP_FL4_FT19_R_": {
         "description": "All features without: 'ts', 'uid', 'label'; All attack types",
-        "attack_files": data_combinations['FL04_R_100_000']['files'],
+        "attack_files": data_combinations['S13_R_100_000']['files'],
         "features": feature_combinations['F19'],
         "config": iot23_data_config,
     },
@@ -481,9 +502,8 @@ def get_exp_def_name_by_experiment(experiment_name):
 
 
 def get_exp_features(experiment_name):
-    exp_def_name = get_exp_def_name_by_experiment(experiment_name)
-    exp_def = experiment_definitions[exp_def_name]
-    return exp_def['features']
+    features_code = experiment_name.split("_", 1)[0]
+    return feature_combinations[features_code]['features']
 
 
 def get_train_data_path(file_path):

@@ -13,8 +13,8 @@ from src.experiments import get_test_data_path, get_train_data_path
 from src.helpers.dataframe_helper import df_get, load_data
 from src.helpers.file_helper import mk_dir, write_json_file
 from src.helpers.model_helper import load_model, score_model
-from src.helpers.stats_helper import plot_correlations, plot_class_values_distribution, print_scatter_matrix, plot_attr_values_distribution, plot_confusion_ma3x, plot_roc_curve, \
-    plot_roc_curve_custom, plot_precision_recall_curve_custom, plot_confusion_ma3x_v2, plot_feature_importance
+from src.helpers.stats_helper import plot_correlations, plot_class_values_distribution, plot_attr_values_distribution, \
+    plot_model_precision_recall_curve, plot_confusion_ma3x, plot_feature_importance, plot_permutation_importance, plot_model_roc_curve
 from src.helpers.xls_helper import export_stats_xls
 
 
@@ -91,7 +91,7 @@ def combine_reports(exp_dir,
     start_time = time.time()
 
     json_stats = find_json_stats(exp_dir, experiment_names)
-    export_stats_xls(exp_dir, json_stats, output_file_name=output_file_name, export_score_tables=True)
+    export_stats_xls(exp_dir, json_stats, output_file_name=output_file_name, enable_score_tables=True)
 
     end_time = time.time()
     exec_time_seconds = (end_time - start_time)
@@ -166,7 +166,7 @@ def export_model_stats(experiment_name,
     export_stats_xls(results_location,
                      {experiment_name: stats},
                      output_file_name=experiment_name + '.xlsx',
-                     export_score_tables=export_score_tables)
+                     enable_score_tables=export_score_tables)
 
 
 def prepare_model_stats(y_true, y_pred, adv_stats, export_score_tables=False):
@@ -189,40 +189,50 @@ def export_model_chart_images(results_location,
     if not export_score_charts:
         return
 
-    if adv_stats is not None and 'Feature Importance' in adv_stats:
-        feat_imp = adv_stats['Feature Importance']
-        if feat_imp is not None:
-            plot_feature_importance(results_location,
-                                    model_name,
-                                    experiment_name,
-                                    feat_imp,
-                                    title=experiment_name + "\n\n" + model_name + "\nFeature Importance",
-                                    file_name=experiment_name + '_' + model_name + "_feat_imp.png")
+    if adv_stats is not None:
+        if 'Feature Importance' in adv_stats:
+            feat_imp = adv_stats['Feature Importance']
+            if feat_imp is not None:
+                plot_feature_importance(results_location,
+                                        model_name,
+                                        experiment_name,
+                                        feat_imp,
+                                        title=experiment_name + "\n\n" + model_name + "\nFeature Importance",
+                                        file_name=experiment_name + '_' + model_name + "_feat_imp.png")
+        if 'Permutation Importance' in adv_stats:
+            imp = adv_stats['Permutation Importance']
+            if imp is not None:
+                plot_permutation_importance(results_location,
+                                            model_name,
+                                            experiment_name,
+                                            imp,
+                                            title=experiment_name + "\n\n" + model_name + "\nPermutation Importance",
+                                            file_name=experiment_name + '_' + model_name + "_permutation_imp.png")
 
-    plot_confusion_ma3x_v2(results_location,
-                           y_test,
-                           y_pred,
-                           experiment_name,
-                           title=experiment_name + "\n\n" + model_name + "\nConfusion Matrix",
-                           file_name=experiment_name + '_' + model_name + "_conf_m3x_v2.png")
+    plot_confusion_ma3x(results_location,
+                        y_test,
+                        y_pred,
+                        experiment_name,
+                        title=experiment_name + "\n\n" + model_name + "\nConfusion Matrix",
+                        file_name=experiment_name + '_' + model_name + "_conf_m3x.png")
 
-    plot_roc_curve_custom(results_location,
-                          model,
-                          model_name,
-                          x_test,
-                          y_test,
-                          experiment_name,
-                          title=experiment_name + "\n\n" + model_name + "\nROC Curves",
-                          file_name=experiment_name + '_' + model_name + "_roc_curve.png")
+    plot_model_roc_curve(results_location,
+                         model,
+                         model_name,
+                         x_test,
+                         y_test,
+                         experiment_name,
+                         title=experiment_name + "\n\n" + model_name + "\nROC Curves",
+                         file_name=experiment_name + '_' + model_name + "_roc_curve.png")
 
-    plot_precision_recall_curve_custom(results_location,
-                                       model,
-                                       model_name,
-                                       x_test,
-                                       y_test,
-                                       experiment_name,
-                                       title=experiment_name + "\n\n" + model_name + "\nPrecision-Recall Curves",
-                                       file_name=experiment_name + '_' + model_name + "_pr_recall_curve.png")
+    plot_model_precision_recall_curve(results_location,
+                                      model,
+                                      model_name,
+                                      x_test,
+                                      y_test,
+                                      experiment_name,
+                                      title=experiment_name + "\n\n" + model_name + "\nPrecision-Recall Curves",
+                                      file_name=experiment_name + '_' + model_name + "_pr_recall_curve.png")
 
 
 def export_data_stats(experiment_name,

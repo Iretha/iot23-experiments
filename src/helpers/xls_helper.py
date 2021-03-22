@@ -6,8 +6,8 @@ import xlsxwriter
 from src.helpers.stats_helper import decode_label
 
 
-def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx', export_score_tables=False):
-    if not export_score_tables:
+def export_stats_xls(output_dir, exp_stats_dict, output_file_name='stats.xlsx', enable_score_tables=False):
+    if not enable_score_tables:
         return
 
     file_path = output_dir + output_file_name
@@ -35,14 +35,15 @@ def create_overall_scores_worksheet(workbook, exp_stats_dict, title="Model Score
         'Algorithm',
         'Runtime (sec)',
         'Accuracy',
-        'Precision (W)',
-        'Precision (M)',
-        'Recall (W)',
-        'Recall (M)',
-        'F1-Score (W)',
-        'F1-Score (M)',
-        'Support (W)',
-        'Support (M)'
+        'Precision (Weighted Avg)',
+        'Precision (Macro)',
+        'Recall (Weighted Avg)',
+        'Recall (Macro)',
+        'F1-Score (Weighted Avg)',
+        'F1-Score (Macro)',
+        'F1-Score (Micro)',
+        'Support (Weighted Avg)',
+        'Support (Macro)'
     ]
     content = [header]
     exp_stat_names = exp_stats_dict.keys()
@@ -66,16 +67,17 @@ def create_overall_model_scores_content(content, exp_name, exp_stats):
         adv_stats = model_stats[model_name]['adv_stats']
         row_content = [exp_name,
                        model_name,
-                       adv_stats['Runtime (sec)'],
-                       model_cls_report["accuracy"],
-                       model_cls_report["weighted avg"]["precision"],
-                       model_cls_report["macro avg"]["precision"],
-                       model_cls_report["weighted avg"]["recall"],
-                       model_cls_report["macro avg"]["recall"],
-                       model_cls_report["weighted avg"]["f1-score"],
-                       model_cls_report["macro avg"]["f1-score"],
-                       model_cls_report["weighted avg"]["support"],
-                       model_cls_report["macro avg"]["support"]]
+                       float(adv_stats['Runtime (sec)']),
+                       float(model_cls_report["accuracy"]),
+                       float(model_cls_report["weighted avg"]["precision"]),
+                       float(model_cls_report["macro avg"]["precision"]),
+                       float(model_cls_report["weighted avg"]["recall"]),
+                       float(model_cls_report["macro avg"]["recall"]),
+                       float(model_cls_report["weighted avg"]["f1-score"]),
+                       float(model_cls_report["macro avg"]["f1-score"]),
+                       float(model_stats[model_name]['f1_score_micro']),
+                       float(model_cls_report["weighted avg"]["support"]),
+                       float(model_cls_report["macro avg"]["support"])]
         content.append(row_content)
     return content
 

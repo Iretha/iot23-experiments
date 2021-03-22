@@ -6,7 +6,7 @@ import psutil
 import seaborn as sns
 
 from src.experiments import data_cleanup_conf
-from src.helpers.dataframe_helper import df_get
+from src.helpers.dataframe_helper import df_get, write_to_csv
 
 # def usage():
 #     process = psutil.Process(os.getpid())
@@ -23,14 +23,22 @@ from src.helpers.log_helper import log_start, log_end
 info = log_start('Start')
 
 # file_path = 'E:\\machine-learning\\datasets\\iot23\\3_data\\FL16_R_5_000_000_clean.csv'
-file_path = 'E:\\machine-learning\\datasets\\iot23\\4_experiments\\F14_FL16_R_5_000_000\\data\\FL16_R_5_000_000_clean.csv_train.csv'
+file_path = 'E:\\machine-learning\\datasets\\iot23\\4_experiments\\F14_FL16_R_5_000_000\\data\\FL16_R_5_000_000_clean.csv_test.csv'
 file_path1 = 'E:\\machine-learning\\datasets\\iot23\\4_experiments\\F14_FL16_R_5_000_000\\data\\FL16_R_5_000_000_clean.csv_test.csv'
 pd.set_option('display.expand_frame_repr', False)
 df = df_get(file_path, delimiter=',')
 
+print(df.shape)
+df = df[~df['detailed-label'].isin([7, 13, 15])]
+print(df.shape)
 
-df_val_counts = df['detailed-label'].value_counts()
-print(df_val_counts)
+write_to_csv(df, file_path, mode="w")
+
+
+# df_val_counts = df['detailed-label'].value_counts()
+# print(df_val_counts)
+
+
 # labels_map = data_cleanup_conf['category_encodings']['detailed-label']
 # labels_map_r = {v: k for k, v in labels_map.items()}
 

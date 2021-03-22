@@ -10,11 +10,9 @@ logging.warning("!!! This step takes about 3 min to complete !!!")
 # Explore data
 exp_home_dir = iot23_experiments_dir
 data_combinations = [
-    data_combinations['FL04_R_100_000'],  # 30 sec
-    # data_combinations['FL16_R_100_000'],  # 30 sec
-
-    # data_combinations['FL04_R_5_000_000'],   # 10 min
-    # data_combinations['FL16_R_5_000_000'],   # 10 min
+    data_combinations['S13_R_100_000'],  # 10 sec
+    data_combinations['S13_R_5_000_000'],  # 30 sec
+    data_combinations['S04_R_5_000_000'],  # 30 sec
 ]
 
 # Selected Features

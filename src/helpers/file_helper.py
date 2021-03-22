@@ -38,9 +38,19 @@ def combine_files_content(source_files,
                           target_file_path,
                           header_line=None,
                           max_rows_from_file=None,
-                          skip_rows=None):
+                          skip_rows=None,
+                          extract_header_row=None,
+                          delete_source_file=False):
     logging.info("-----> Mix data from multiple files: " + str(len(source_files)))
     start_time = time.time()
+
+    shuffle(source_files)
+
+    if header_line is None and extract_header_row:
+        with open(source_files[0], "r+") as source_header_file:
+            for line in source_header_file:
+                header_line = line
+                break
 
     file_counter = 0
     with open(target_file_path, "w+") as target_file:
@@ -50,6 +60,9 @@ def combine_files_content(source_files,
             file_counter += 1
             logging.info(str(file_counter) + '. Read data from file: ' + file_path)
             write_file_content(file_path, target_file, max_rows_from_file=max_rows_from_file, skip_rows=skip_rows)
+            if delete_source_file:
+                os.remove(file_path)
+                logging.info("Deleting file: " + file_path)
 
     log_duration(start_time, '-----> Mixing data finished in')
 
@@ -149,6 +162,11 @@ def get_file_size_in_mb(file_path):
         size_in_bytes = os.path.getsize(file_path)
         size_in_mb = size_in_bytes / (1024 * 1024)
     return size_in_mb
+
+
+def get_file_size_in_gb(file_path):
+    size_in_mb = get_file_size_in_mb(file_path)
+    return size_in_mb / 1000
 
 
 def get_col_value(line, sep, idx, map_key_values={}):

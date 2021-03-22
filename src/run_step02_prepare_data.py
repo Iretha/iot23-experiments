@@ -13,18 +13,17 @@ logging.warning("!!! This step takes about 20 min to complete !!!")
 source_files_dir = iot23_attacks_dir
 output_files_dir = iot23_data_dir
 combinations = [
-    data_combinations['FL04_R_100_000'],   # 30 sec
-    data_combinations['FL16_R_100_000'],   # 30 sec
+    data_combinations['S13_R_100_000'],  # 10 sec
+    data_combinations['S13_R_5_000_000'],  # 30 sec
+    data_combinations['S04_R_5_000_000'],  # 30 sec
 
-    data_combinations['FL04_R_5_000_000'],   # 10 min
-    data_combinations['FL16_R_5_000_000'],   # 10 min
 ]
 prepare_data(source_files_dir,
              output_files_dir,
              iot23_config["file_header"],
              data_cleanup_conf,
              data_combinations=combinations,
-             overwrite=True)
+             overwrite=False)
 
 print('Step 02: The end.')
 quit()
