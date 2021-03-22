@@ -125,7 +125,7 @@ def score_model(model_name, model, x_test, y_test, prefix='', labels=None, title
     print_time("---> ---> Prediction time is", pred_time_in_sec)
 
     extract_feature_importance(model_name, model, adv_stats)
-    extract_permutation_importance(model_name, model, x_test, y_test, adv_stats)
+    # extract_permutation_importance(model_name, model, x_test, y_test, adv_stats)
     print_score(y_test, predictions)
     print_class_report(y_test, predictions)
 
