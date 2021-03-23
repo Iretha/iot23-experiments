@@ -11,9 +11,10 @@ logging.warning("!!! This step takes about 3 min to complete !!!")
 # Selected Data Files
 data_file_dir = iot23_data_dir
 data_combinations = [
-    data_combinations['S13_R_100_000'],  # 10 sec
-    data_combinations['S13_R_5_000_000'],  # 30 sec
-    data_combinations['S04_R_5_000_000'],  # 30 sec
+    # data_combinations['S13_R_100_000'],  # 10 sec
+    # data_combinations['S13_R_5_000_000'],  # 30 sec
+    # data_combinations['S04_R_5_000_000'],  # 30 sec
+    data_combinations['S16_R_5_000_000'],  # 30 sec
 ]
 
 # Selected Features
@@ -22,9 +23,9 @@ features = [
 ]
 explore_data_combinations(data_file_dir,
                           combinations=data_combinations,
-                          plot_corr=False,
+                          plot_corr=True,
                           plot_cls_dist=True,
-                          plot_attr_dist=False)
+                          plot_attr_dist=True)
 
 print('Step 03: The end.')
 quit()

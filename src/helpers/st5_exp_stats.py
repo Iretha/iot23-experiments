@@ -1,19 +1,14 @@
 import os
-
 import glob
-
 import ntpath
-
 import pickle
-
 import logging
 import time
-
 import psutil
 import re
 
 from sklearn.inspection import permutation_importance
-from sklearn.metrics import accuracy_score, classification_report, f1_score
+from sklearn.metrics import accuracy_score, classification_report, f1_score, recall_score, precision_score, balanced_accuracy_score
 from sklearn.pipeline import Pipeline
 
 from src.experiments import get_exp_name, get_exp_models_dir, get_exp_results_dir, get_exp_data_dir, data_cleanup_conf, get_test_data_path
@@ -216,17 +211,24 @@ def load_model(model_path):
 
 def score_model(model_name, model, x_test, y_test, enable_model_insights=False):
     logging.info('======================= Predicting with: ' + model_name)
-
-    adv_stats = {}
-
     start_time = time.time()
+
+    # Measure CPU Utilization (Starting point)
+    pid = os.getpid()
+    p = psutil.Process(pid)
+    p.cpu_percent()
+
+    # Make predictions
     predictions = model.predict(x_test)
-
     pred_time_in_sec = time.time() - start_time
-    adv_stats['Runtime (sec)'] = pred_time_in_sec
-    adv_stats['Runtime (min)'] = "%0.2f" % ((pred_time_in_sec / 60),)
-
     log_duration(start_time, "---> ---> Prediction time of " + model_name + " is")
+
+    # Collect stats
+    adv_stats = {
+        'Runtime (sec)': pred_time_in_sec,
+        'Runtime (min)': "%0.2f" % ((pred_time_in_sec / 60),),
+        'CPU': p.cpu_percent(),
+        'Process Memory': p.memory_percent()}
 
     adv_insights = {}
     if enable_model_insights:
@@ -283,5 +285,9 @@ def load_model_stats(y_true, y_pred, adv_stats, enable_score_tables=False):
         return
 
     return {'classification_report': classification_report(y_true, y_pred, output_dict=True),
+            'accuracy': accuracy_score(y_true, y_pred),
+            'precision_score_micro': precision_score(y_true, y_pred, average='micro'),
+            'recall_score_micro': recall_score(y_true, y_pred, average='micro'),
             'f1_score_micro': f1_score(y_true, y_pred, average='micro'),
+            'balanced_accuracy': balanced_accuracy_score(y_true, y_pred),
             'adv_stats': adv_stats}

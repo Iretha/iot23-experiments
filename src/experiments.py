@@ -340,12 +340,12 @@ data_combinations = {
         "max_rows_per_file": 5_000_000,
         "combined_data_file_name": 'S13_R_5_000_000.scv',
         "clean_data_file_name": 'S13_R_5_000_000_clean.csv'},
-    # 'S16_R_5_000_000': {
-    #     "description": 'S16_R_5_000_000',
-    #     "files": [],  # empty => combine all source files
-    #     "max_rows_per_file": 5_000_000,
-    #     "combined_data_file_name": 'S16_R_5_000_000.scv',
-    #     "clean_data_file_name": 'S16_R_5_000_000_clean.csv'},
+    'S16_R_5_000_000': {
+        "description": 'S16_R_5_000_000',
+        "files": [],  # empty => combine all source files
+        "max_rows_per_file": 5_000_000,
+        "combined_data_file_name": 'S16_R_5_000_000.scv',
+        "clean_data_file_name": 'S16_R_5_000_000_clean.csv'},
 }
 
 feature_combinations = {
@@ -542,3 +542,19 @@ def get_exp_results_dir(exp_name):
 
 def get_exp_name(data_combination, feature_combination):
     return feature_combination['description'] + '_' + data_combination['description']
+
+
+def get_feat_def_name(experiment_name):
+    return experiment_name.split("_S", 1)[0]
+
+
+def get_data_def_name(experiment_name):
+    return experiment_name.split("_", 1)[1]
+
+
+def get_data_def_name_short(experiment_name):
+    return experiment_name.split("_")[1]
+
+
+def get_row_count(experiment_name):
+    return float(experiment_name.split("R_", 1)[1])

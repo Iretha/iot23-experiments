@@ -15,13 +15,13 @@ import scikitplot
 
 
 def print_versions():
-    print('The scikit-learn version is {}.'.format(sklearn.__version__))
-    print('The numpy version is {}.'.format(numpy.__version__))
-    print('The pandas version is {}.'.format(pandas.__version__))
-    print('The matplotlib version is {}.'.format(matplotlib.__version__))
-    print('The seaborn version is {}.'.format(seaborn.__version__))
-    print('The psutil version is {}.'.format(psutil.__version__))
-    print('The scikitplot version is {}.'.format(scikitplot.__version__))
+    print('scikit-learn v{},'.format(sklearn.__version__))
+    print('NumPy v{},'.format(numpy.__version__))
+    print('Pandas v{},'.format(pandas.__version__))
+    print('Matplotlib v{},'.format(matplotlib.__version__))
+    print('Seaborn v{},'.format(seaborn.__version__))
+    print('Psutil v{},'.format(psutil.__version__))
+    print('Scikitplot, v{}'.format(scikitplot.__version__))
 
 
 def print_system_info():
@@ -55,3 +55,11 @@ def print_system_info():
 
 print_versions()
 print_system_info()
+
+
+p = psutil.Process()
+info = p.memory_percent()
+print(info)
+
+print('The end.')
+quit()
